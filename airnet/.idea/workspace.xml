@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9bde277f-edc2-41dc-89aa-29f4d9ea310e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/service-zuul/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/src/main/java/com/zsc/servicezuul/ServiceZuulApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/src/main/java/com/zsc/servicezuul/filter/MyFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-zuul/src/test/java/com/zsc/servicezuul/ServiceZuulApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airnetConfig/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../airnetConfig/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airnetConfig/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../airnetConfig/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airnetConfig/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../airnetConfig/pom.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -92,7 +84,7 @@
   <component name="MavenRunner">
     <option name="jreName" value="1.8" />
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="573" />
     <option name="y" value="42" />
     <option name="width" value="1455" />
@@ -182,7 +174,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578211310833" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578212028203" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
@@ -254,7 +246,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1578194388931</updated>
-      <workItem from="1578194392430" duration="12346000" />
+      <workItem from="1578194392430" duration="12857000" />
     </task>
     <task id="LOCAL-00001" summary="服务消费者(Rest+Ribbon;Feign)">
       <created>1578207112647</created>
@@ -281,7 +273,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12346000" />
+    <option name="totallyTimeSpent" value="12857000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -294,6 +286,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="459" y="34" width="1164" height="753" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" />
       <window_info id="Image Layers" />
