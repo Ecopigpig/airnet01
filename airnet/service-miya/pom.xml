@@ -6,11 +6,11 @@
         <groupId>com.zsc</groupId>
         <artifactId>airnet</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>service-hi</artifactId>
+    <artifactId>service-miya</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>ServiceHi</name>
+    <name>ServiceMiya</name>
     <description>Demo project for Spring Boot</description>
 
 
