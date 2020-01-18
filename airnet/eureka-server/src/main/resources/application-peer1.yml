@@ -1,0 +1,14 @@
+server:
+  port: 8761
+
+spring:
+  profiles:
+    include: peer1
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    serviceUrl:
+      defaultZone: http://peer2:8769/eureka/ #如果这个8761注册中心宕机了,就依靠8769这个注册服务中心来支撑
+    registerWithEureka: false #避免server当作客户端注册到自身
+    fetchRegistry: false #避免server当作客户端注册到自身

@@ -16,7 +16,8 @@ spring:
 eureka:
   client:
     service-url:
-      default-Zone: http://localhost:8761/euraka/
+      default-Zone: http://peer1:8761/euraka/
+#      default-Zone: http://localhost:8761/euraka/
 
 management:
   metrics:

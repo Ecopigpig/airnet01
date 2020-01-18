@@ -13,3 +13,5 @@ eureka:
 spring:
   application:
     name: eurka-server
+  profiles:
+    active: peer2  #此处决定启用哪个注册中心
