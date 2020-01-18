@@ -24,5 +24,13 @@ management:
     web:
       server:
         auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+
 
 
