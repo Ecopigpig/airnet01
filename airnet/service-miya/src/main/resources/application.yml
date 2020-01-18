@@ -3,14 +3,23 @@ server:
 
 spring:
   application:
-    name: service-hi #服务之间的调用就是通过这个名字
+    name: service-miya #服务之间的调用就是通过这个名字
   zipkin:
     base-url: http://localhost/9411
+    sender:
+      type: web
   sleuth:
     sampler:
       probability: 1.0
+    trace-id128: true
 
 eureka:
   client:
     service-url:
       default-Zone: http://localhost:8761/euraka/
+
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
