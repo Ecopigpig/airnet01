@@ -3,6 +3,9 @@ package com.zsc.servicehi;
 import brave.sampler.Sampler;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
+import com.zsc.servicehi.model.PollutionEpisode;
+import com.zsc.servicehi.model.ResponseResult;
+import com.zsc.servicehi.utils.GetData;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,4 +102,18 @@ public class ServiceHiApplication {
     public Sampler defaultSampler() {
         return Sampler.ALWAYS_SAMPLE;
     }
+
+
+    /**
+     * 毕设 start
+     */
+//    @RequestMapping("/getCity")
+//    public ResponseResult index(@RequestParam String city){
+//        GetData getData = new GetData();
+//        PollutionEpisode pollutionEpisode = getData.getCityPollutionEpisode(city);
+//        ResponseResult result = new ResponseResult();
+//        result.setData(pollutionEpisode);
+//        return result;
+//    }
+
 }
