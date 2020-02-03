@@ -98,21 +98,6 @@ public class GetWeatherData {
         return null;
     }
 
-    /**
-     * 主函数
-     *
-     * @param args
-     */
-    public static void main(String args[]) throws ParseException {
-
-        String date = "20151101095440";
-        String data = "202002031200";
-
-        String reg = "(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})";
-        date = data.replaceAll(reg, "$1-$2-$3 $4:$5");
-        System.out.println(date);
-    }
-
 
     public List<Weather24Hours> get24HourWeather(String city) {
         List<Weather24Hours> weather24HoursList = new ArrayList<>();

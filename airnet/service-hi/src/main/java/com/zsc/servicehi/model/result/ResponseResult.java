@@ -1,26 +1,15 @@
 package com.zsc.servicehi.model.result;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class ResponseResult implements Serializable {
 
     private Boolean msg;
 
     private Object data;
 
-    public Boolean getMsg() {
-        return msg;
-    }
+    private Long total;
 
-    public void setMsg(Boolean msg) {
-        this.msg = msg;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

@@ -1,11 +1,13 @@
 package com.zsc.servicehi;
 
 import brave.sampler.Sampler;
+import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -23,12 +25,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableEurekaClient
 @RestController
 @EnableHystrix  //开启断路器
 @EnableHystrixDashboard
 @EnableCircuitBreaker
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@ImportAutoConfiguration(PageHelperAutoConfiguration.class)
 public class ServiceHiApplication {
 
     /**
