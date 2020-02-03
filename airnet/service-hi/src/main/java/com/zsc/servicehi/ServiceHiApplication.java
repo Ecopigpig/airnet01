@@ -3,14 +3,11 @@ package com.zsc.servicehi;
 import brave.sampler.Sampler;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
-import com.zsc.servicehi.model.PollutionEpisode;
-import com.zsc.servicehi.model.ResponseResult;
-import com.zsc.servicehi.utils.GetData;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -26,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableEurekaClient
 @RestController
 @EnableHystrix  //开启断路器
@@ -109,7 +106,7 @@ public class ServiceHiApplication {
      */
 //    @RequestMapping("/getCity")
 //    public ResponseResult index(@RequestParam String city){
-//        GetData getData = new GetData();
+//        GetPollutantData getData = new GetPollutantData();
 //        PollutionEpisode pollutionEpisode = getData.getCityPollutionEpisode(city);
 //        ResponseResult result = new ResponseResult();
 //        result.setData(pollutionEpisode);

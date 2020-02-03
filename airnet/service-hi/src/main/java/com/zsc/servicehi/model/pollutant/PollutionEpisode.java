@@ -1,13 +1,9 @@
-package com.zsc.servicehi.model;
+package com.zsc.servicehi.model.pollutant;
 
 /**
- * 单个城市的污染情况模型实体
+ * 基本污染指数模型
  */
 public class PollutionEpisode {
-    /**
-     * 城市排名
-     */
-    private String num;
     /**
      * 二氧化硫1小时平均浓度，ug/m3
      */
@@ -56,14 +52,6 @@ public class PollutionEpisode {
      * 臭氧8小时滑动平均，μg/m3
      */
     private String o3Per8h;
-
-    public String getNum() {
-        return num;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
-    }
 
     public String getSo2() {
         return so2;

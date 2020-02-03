@@ -1,4 +1,4 @@
-package com.zsc.servicehi.model;
+package com.zsc.servicehi.model.result;
 
 import java.io.Serializable;
 

@@ -22,17 +22,20 @@
         </dependency>
     </dependencies>
 
+    <!--配置springcloud依赖 公用部分-->
     <dependencyManagement>
         <dependencies>
+            <!-- SpringCloud 版本控制依赖 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
+                <version>Finchley.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 
     <build>
         <plugins>
