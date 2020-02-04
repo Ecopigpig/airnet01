@@ -18,6 +18,7 @@
         <module>service-miya</module>
         <module>service-ribbon</module>
         <module>service-zuul</module>
+        <module>service-data</module>
     </modules>
 
     <parent>
