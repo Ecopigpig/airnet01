@@ -7,9 +7,8 @@ import java.util.Date;
 
 @Data
 public class UserEntity implements Serializable {
-    private Long id;
-    private String guid;
-    private String name;
-    private String age;
-    private Date createTime;
+    public String username;
+    public String userpassword;
+    public  int age;
+    public  String sex;
 }

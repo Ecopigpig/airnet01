@@ -1,6 +1,7 @@
 package com.zsc.servicedata;
 
 import com.zsc.servicedata.config.CacheConfigure;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableHystrix  //开启断路器
 @EnableHystrixDashboard
 @EnableCircuitBreaker
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
+@MapperScan("com.zsc.servicedata.mapper")
 public class ServiceDataApplication {
 
     public static void main(String[] args) {

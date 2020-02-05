@@ -46,8 +46,8 @@ public class ServiceDataApplicationTests {
     @Test
     public void test05(){
         UserEntity user = new UserEntity();
-        user.setId(5L);
-        user.setName("王五");
+//        user.setId(5L);
+//        user.setName("王五");
         redisTemplate.opsForValue().set("user1",user);
     }
     //该test完成了把list存储到redis,再重新获取出来
@@ -55,11 +55,11 @@ public class ServiceDataApplicationTests {
     public void test06() {
         List<UserEntity> list = new ArrayList<>();
         UserEntity entity = new UserEntity();
-        entity.setId(11111L);
-        entity.setName("AAAAAA");
+//        entity.setId(11111L);
+//        entity.setName("AAAAAA");
         UserEntity entity1 = new UserEntity();
-        entity1.setId(22222L);
-        entity1.setName("bbbbbb");
+//        entity1.setId(22222L);
+//        entity1.setName("bbbbbb");
         list.add(entity);
         list.add(entity1);
         list.forEach(item->{
