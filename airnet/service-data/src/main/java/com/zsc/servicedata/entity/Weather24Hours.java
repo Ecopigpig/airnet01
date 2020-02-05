@@ -1,9 +1,8 @@
-package com.zsc.servicehi.model.weather;
+package com.zsc.servicedata.entity;
 
 import lombok.Data;
 
 import java.io.Serializable;
-
 @Data
 public class Weather24Hours implements Serializable {
     /**

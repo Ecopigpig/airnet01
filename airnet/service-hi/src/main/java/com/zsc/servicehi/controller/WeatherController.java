@@ -1,11 +1,14 @@
 package com.zsc.servicehi.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zsc.servicehi.model.result.ResponseResult;
+import com.zsc.servicehi.model.transfer.EntityTest;
 import com.zsc.servicehi.model.weather.Weather24Hours;
 import com.zsc.servicehi.model.weather.WeatherIn15Days;
 import com.zsc.servicehi.utils.GetWeatherData;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -29,48 +32,37 @@ public class WeatherController {
     public RestTemplate getRestTemplate(){
         return new RestTemplate();
     }
+
+
     //这个链接能拿到数据
     @RequestMapping("/get24HourData")
-    public ResponseResult get24HourData(@RequestParam String city){
+    public List<Weather24Hours> get24HourData(@RequestParam String city){
         GetWeatherData getWeatherData = new GetWeatherData();
         List<Weather24Hours> weather24HoursList = getWeatherData.get24HourWeather(city);
-        ResponseResult result = new ResponseResult();
-        result.setMsg(false);
-        if(weather24HoursList !=null){
-            result.setMsg(true);
-        }
-        result.setData(weather24HoursList);
-        return result;
+        return weather24HoursList;
     }
 
     @RequestMapping("/get24Hour")
     public ResponseResult get24Hour(@RequestParam String city){
         GetWeatherData getWeatherData = new GetWeatherData();
         List<Weather24Hours> weather24HoursList = new ArrayList<>();
-        List object = template.getForObject("http://127.0.0.1:8708/redis/get?key="+city, List.class);
-        //flag等于false,则redis里头没有这个缓存
-        if(object!=null){
-            //有缓存就取出来
-            weather24HoursList.addAll(object);
-        }else{
+        List<Weather24Hours> object = template.getForObject("http://127.0.0.1:8708/redis/getList?key="+city, List.class);
+        if(object.size()==0){
             //没有缓存就存进去
             weather24HoursList = getWeatherData.get24HourWeather(city);
-            JSONObject  jsonObject = new JSONObject();
-            JSONArray jsonArray = new JSONArray();
-            for (int a=0;a<weather24HoursList.size();a++){
-                JSONObject obj = new JSONObject();
-                Weather24Hours viewBean = weather24HoursList.get(a);
-                obj.put(viewBean.getTime(),viewBean);
-                jsonArray.add(obj);
-            }
-            jsonObject.put(city,jsonArray);
-            template.getForObject("http://127.0.0.1:8708/redis/set?key="+city+"&object="+jsonObject,Object.class);
-//            redisUtil.set(city,jsonObject,60000);
+            EntityTest entityTest = new EntityTest();
+            entityTest.setKey(city);
+            entityTest.setList(weather24HoursList);
+            template.postForObject("http://127.0.0.1:8708/redis/setList",entityTest,List.class);
+        }else{
+            //有缓存就取出来
+            weather24HoursList.addAll(object);
         }
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         if(weather24HoursList !=null){
             result.setMsg(true);
+            result.setTotal(Long.valueOf(weather24HoursList.size()));
         }
         result.setData(weather24HoursList);
         return result;
