@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "AirController", tags = "空气质量控制器")
@@ -26,10 +27,10 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/air")
 public class AirController {
 
-    @Autowired
+    @Resource
     RedisTemplate redisTemplate;
 
-    @Autowired
+    @Resource
     StringRedisTemplate stringRedisTemplate;
 
     @ApiOperation(value = "根据城市中文名获取该城市的空气质量情况")
@@ -39,9 +40,7 @@ public class AirController {
     @RequestMapping(value = "/getAirQuality", method = RequestMethod.GET)
     public ResponseResult getAirQuality(@RequestParam String city) {
         GetAirData airData = new GetAirData();
-
         AirQuality airQuality = new AirQuality();
-
         String key = city + "AirQuality";
         JSON json = (JSON) JSON.toJSON(redisTemplate.opsForValue().get(key));
         Object javaObject = JSON.toJavaObject(json, AirQuality.class);
@@ -54,7 +53,6 @@ public class AirController {
             BeanUtils.copyProperties(javaObject, airQuality);
         }
         stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
-
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         if (airQuality != null) {

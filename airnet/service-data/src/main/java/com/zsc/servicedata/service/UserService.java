@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface UserService {
     List<UserEntity> getUserList();
+
+    String AddUser(UserEntity user);
 }

@@ -74,7 +74,7 @@ public class WeatherController {
         Long length = redisTemplate.opsForList().size(key);
         for (Long i = 0L; i < length; i++) {
             JSON json = (JSON) JSON.toJSON(redisTemplate.opsForList().index(key, i));
-            Object javaObject = JSON.toJavaObject(json, com.zsc.servicedata.entity.Weather24Hours.class);
+            Object javaObject = JSON.toJavaObject(json, Weather24Hours.class);
             Weather24Hours result = new Weather24Hours();
             BeanUtils.copyProperties(javaObject, result);
             redisList.add(result);
@@ -108,6 +108,29 @@ public class WeatherController {
     public ResponseResult getIn15Days(@RequestParam String city) {
         GetWeatherData getWeatherData = new GetWeatherData();
         List<WeatherIn15Days> weatherIn15DaysList = getWeatherData.getWeatherIn15Days(city);
+        List<WeatherIn15Days> redisList = new ArrayList<>();
+        //每次响应都要去redis看看有没有这个value可以去取
+        String key = city + "15DayWeather";
+        Long length = redisTemplate.opsForList().size(key);
+        for (Long i = 0L; i < length; i++) {
+            JSON json = (JSON) JSON.toJSON(redisTemplate.opsForList().index(key, i));
+            Object javaObject = JSON.toJavaObject(json, WeatherIn15Days.class);
+            WeatherIn15Days result = new WeatherIn15Days();
+            BeanUtils.copyProperties(javaObject, result);
+            redisList.add(result);
+        }
+        if (redisList.size() == 0) {
+            //没有缓存就存进去
+            weatherIn15DaysList = getWeatherData.getWeatherIn15Days(city);
+            weatherIn15DaysList.forEach(item -> {
+                redisTemplate.opsForList().rightPush(key, item);
+            });
+        } else {
+            //有缓存就取出来
+            weatherIn15DaysList.addAll(redisList);
+        }
+        stringRedisTemplate.expire(key,30,TimeUnit.MINUTES);
+
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         if (weatherIn15DaysList != null) {

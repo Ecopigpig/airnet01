@@ -124,6 +124,7 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.3.2</version>
         </dependency>
+        <!--@table-->
     </dependencies>
 
     <!--配置springcloud依赖 公用部分-->
