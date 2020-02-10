@@ -15,8 +15,8 @@ public class PollutionMonitorParam implements Serializable {
 
     private static final long serialVersionUID = -132525208124470458L;
 
-    @ApiModelProperty(value = "id")
-    private Long id;
+//    @ApiModelProperty(value = "id")
+//    private Long id;
 
     @NotNull(message = "用户ID不能为空")
     @ApiModelProperty(value = "用户ID")
@@ -26,6 +26,7 @@ public class PollutionMonitorParam implements Serializable {
     @ApiModelProperty(value = "要检测的城市名称")
     private String area;
 
+    @NotEmpty(message = "检测点名称不能为空")
     @ApiModelProperty(value = "城市污染检测点名称")
     private String siteName;
 
@@ -48,11 +49,11 @@ public class PollutionMonitorParam implements Serializable {
     private Float aqi;
 
     @NotEmpty
-    @ApiModelProperty(value = "空气质量阈值")
+    @ApiModelProperty(value = "空气质量阈值,有“优、良、轻度污染、中度污染、重度污染、严重污染”6类")
     private String quality;
 
     @ApiModelProperty(value = "PM10阈值")
-    private Float PM10;
+    private Float pm10;
 
     @ApiModelProperty(value = "每8小时的O3浓度阈值")
     private Float o3per8h;

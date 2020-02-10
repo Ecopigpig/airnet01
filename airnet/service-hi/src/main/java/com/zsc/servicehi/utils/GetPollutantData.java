@@ -23,7 +23,7 @@ public class GetPollutantData {
      * @param params 请求参数
      * @return
      */
-    public static String proxyToDesURL(String method, String url, Map<String, String> headers,
+    private static String proxyToDesURL(String method, String url, Map<String, String> headers,
                                        Map<String, String> params) {
         try {
             SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();

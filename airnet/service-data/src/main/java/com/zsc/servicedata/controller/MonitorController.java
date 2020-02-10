@@ -1,7 +1,8 @@
 package com.zsc.servicedata.controller;
 
-import com.zsc.servicedata.entity.Pollutant;
+import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.UserEntity;
+import com.zsc.servicedata.entity.param.AlarmParam;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
 import com.zsc.servicedata.entity.result.ResponseResult;
 import com.zsc.servicedata.service.Impl.UserServiceImpl;
@@ -10,15 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,33 +49,30 @@ public class MonitorController {
 
     @ApiOperation(value = "用户自行添加监测点")
     @RequestMapping(value = "/setMonitor",method = RequestMethod.POST)
-    public ResponseResult setMonitor(@RequestBody PollutionMonitorParam param){
+    public ResponseResult setMonitor(@RequestBody List<PollutionMonitorParam> paramList){
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        int response = pollutionService.setMonitor(param);
-        if(response > 0){
+        try {
+            pollutionService.setMonitor(paramList);
             result.setMsg(true);
+        }catch (Exception e){
+            result.setData(e.getMessage());
         }
         return result;
     }
 
-    /**
-     * 提取各个城市的监测点，用于用户选择
-     */
-    @ApiOperation(value = "通过城市名称获取旗下的监测点列表" )
-    @RequestMapping(value = "/getMonitorPointInCity")
-    public ResponseResult getMonitorPointInCity(@RequestParam String city){
+    @ApiOperation(value = "通过城市名称获取其下的监测点列表" )
+    @RequestMapping(value = "/getMonitorPointInCity",method = RequestMethod.GET)
+    public ResponseResult getMonitorPointInCity(@RequestParam String city) throws Exception {
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         Map<String,List<String>> map = pollutionService.getMonitorPointInCity(city);
-//        int response = pollutionService.setMonitor(param);
-//        if(response > 0){
-//            result.setMsg(true);
-//        }
+        if(map.size()>0){
+            result.setMsg(true);
+            result.setData(map);
+        }
         return result;
     }
-
-
 
 
     /**

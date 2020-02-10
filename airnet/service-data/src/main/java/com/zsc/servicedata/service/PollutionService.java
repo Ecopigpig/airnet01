@@ -1,7 +1,8 @@
 package com.zsc.servicedata.service;
 
-import com.zsc.servicedata.entity.Pollutant;
+import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public interface PollutionService {
 
     /**
      * 设置监测点
-     * @param param
+     * @param paramList
      * @return
      */
-    int setMonitor(PollutionMonitorParam param);
+    void setMonitor(List<PollutionMonitorParam> paramList)throws Exception;
 
     /**
      * 通过城市名返回该城市下的污染检测点

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsc.servicedata.mapper.PollutionMapper">
+
+    <select id="selectMonitorListByUser" parameterType="Long" resultType="com.zsc.servicedata.entity.data.Pollutant">
+        select * from pollutant where userId = #{userId}
+    </select>
+
+    <insert id="insertMonitorPoint" parameterType="com.zsc.servicedata.entity.param.PollutionMonitorParam">
+        insert into pollutantmonitor (so2,o3,pm25,co,no2,aqi,quality,pm10,o3per8h,area,siteName,userId)
+        values
+        <foreach collection="list" item="item" index="index" separator="," close=";">
+            (#{item.so2},#{item.o3},#{item.pm25},#{item.co},#{item.no2},#{item.aqi},
+            #{item.quality},#{item.pm10},#{item.o3per8h},#{item.area},#{item.siteName},#{item.userId})
+        </foreach>
+    </insert>
+</mapper>

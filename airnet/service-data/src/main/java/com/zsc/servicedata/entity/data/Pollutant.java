@@ -1,4 +1,4 @@
-package com.zsc.servicedata.entity;
+package com.zsc.servicedata.entity.data;
 
 import com.google.common.collect.Table;
 import io.swagger.annotations.ApiModel;

@@ -3,6 +3,7 @@ package com.zsc.servicehi.controller;
 import com.alibaba.fastjson.JSON;
 import com.zsc.servicehi.model.air.AirQuality;
 import com.zsc.servicehi.model.pollutant.PollutantCity;
+import com.zsc.servicehi.model.pollutant.PollutionSite;
 import com.zsc.servicehi.model.result.ResponseResult;
 import com.zsc.servicehi.model.weather.Weather24Hours;
 import com.zsc.servicehi.utils.GetPollutantData;
@@ -17,7 +18,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "PollutantController", tags = "空气污染情况控制器")
@@ -30,6 +33,42 @@ public class PollutantController {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+
+    /**
+     * 提供给service-data获取城市监测点名称列表
+     * @param city
+     * @return
+     */
+    @RequestMapping(value = "/offerPollutantSites",method = RequestMethod.GET)
+    public Map<String,List<String>> offerPollutantSites(@RequestParam String city){
+        GetPollutantData getPollutantData = new GetPollutantData();
+        Map<String,List<String>> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        PollutantCity pollutantCity = new PollutantCity();
+        String key = city + "PollutionSituation";
+        JSON json = (JSON) JSON.toJSON(redisTemplate.opsForValue().get(key));
+        Object javaObject = JSON.toJavaObject(json, PollutantCity.class);
+        if (javaObject == null) {
+            //没有缓存就存进去
+            pollutantCity = getPollutantData.getCityPollutionEpisode(city);
+            redisTemplate.opsForValue().set(key, pollutantCity);
+        } else {
+            //有缓存就取出来
+            BeanUtils.copyProperties(javaObject, pollutantCity);
+        }
+        List<String> cityList = new ArrayList<>();
+        cityList.add(city);
+        map.put("city",cityList);
+        stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
+        List<PollutionSite> pollutionSiteList =pollutantCity.getPollutionSiteList();
+        if(pollutionSiteList!=null){
+            pollutionSiteList.forEach(site->{
+                list.add(site.getSiteName());
+            });
+            map.put("siteName",list);
+        }
+        return map;
+    }
 
     @ApiOperation(value = "根据城市中文名获取该城市的空气污染情况")
     @ApiImplicitParams({
