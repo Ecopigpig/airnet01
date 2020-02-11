@@ -24,4 +24,6 @@ public interface PollutionMapper {
     List<Pollutant> selectMonitorListByUser(Long userId);
 
     int insertMonitorPoint(@Param("list") List<PollutionMonitorParam> paramList);
+
+    List<Pollutant> selectAllMonitor();
 }

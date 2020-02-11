@@ -31,4 +31,10 @@ public interface PollutionService {
      * @return
      */
     Map<String, List<String>> getMonitorPointInCity(String city);
+
+    /**
+     * 获取所有的监测记录
+     * @return
+     */
+    List<Pollutant> getAllMonitors();
 }

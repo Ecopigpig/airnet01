@@ -1,0 +1,22 @@
+package com.zsc.servicedata.mapper;
+
+import com.zsc.servicedata.entity.data.UserInfo;
+import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@Component
+public interface UserMapper {
+    /**
+     * 通过用户ID批量查询用户邮箱
+     * @param userIdList
+     * @return
+     */
+    @MapKey("id")
+    Map<Long, UserInfo> selectAllUserEmail(@Param("list") Set<Long> userIdList);
+
+}

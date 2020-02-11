@@ -74,30 +74,4 @@ public class MonitorController {
         return result;
     }
 
-
-    /**
-     * 测试用
-     * @return
-     */
-    @RequestMapping("/getuserlist")
-    public List<UserEntity> getUserList()
-    {
-        List<UserEntity> list = userServer.getUserList();
-        list.forEach(item->{
-            System.out.println(item.getUsername()+","+item.getSex());
-        });
-        return userServer.getUserList();
-    }
-
-    /**
-     * 测试用
-     * @param user
-     * @return
-     */
-    @PostMapping("/adduser")
-    public String addUser(UserEntity user)
-    {
-        return userServer.AddUser(user);
-    }
-
 }

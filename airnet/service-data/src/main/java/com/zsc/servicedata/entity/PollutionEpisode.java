@@ -38,7 +38,7 @@ public class PollutionEpisode {
     @ApiModelProperty(value = "空气质量指数(AQI)")
     private String aqi;
 
-    @ApiModelProperty(value = "空气质量指数类别，有“优、良、轻度污染、中度污染、重度污染、严重污染”6类")
+    @ApiModelProperty(value = "空气质量指数类别，有“优质、良好、轻度污染、中度污染、重度污染、严重污染”6类")
     private String quality;
 
     @ApiModelProperty(value = "颗粒物（粒径小于等于10μm）1小时平均，μg/m3")

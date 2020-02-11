@@ -9,5 +9,4 @@
             (#{city},#{item})
         </foreach>
     </select>
-
 </mapper>

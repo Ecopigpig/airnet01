@@ -16,4 +16,8 @@
             #{item.quality},#{item.pm10},#{item.o3per8h},#{item.area},#{item.siteName},#{item.userId})
         </foreach>
     </insert>
+
+    <select id="selectAllMonitor" resultType="com.zsc.servicedata.entity.data.Pollutant">
+        select * from pollutantmonitor
+    </select>
 </mapper>

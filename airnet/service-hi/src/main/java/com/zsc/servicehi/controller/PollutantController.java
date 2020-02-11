@@ -70,6 +70,16 @@ public class PollutantController {
         return map;
     }
 
+
+    //直接获取实时的数据吧，不要经过缓存了
+    @RequestMapping(value = "/offerNationPollutant",method = RequestMethod.GET)
+    public List<PollutantCity> offerNationPollutant(){
+        GetPollutantData getPollutantData = new GetPollutantData();
+        List<PollutantCity> pollutantCityList = getPollutantData.getNationPollutantRank();
+        return pollutantCityList;
+    }
+
+
     @ApiOperation(value = "根据城市中文名获取该城市的空气污染情况")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "city", value = "城市名称", required = true, dataType = "String")
@@ -100,12 +110,13 @@ public class PollutantController {
         return result;
     }
 
+
     @ApiOperation(value = "获取全国PM2.5指数排行榜")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "page", value = "页码,默认1", dataType = "int"),
             @ApiImplicitParam(paramType = "query", name = "size", value = "页面大小,默认20", dataType = "int")
     })
-    @RequestMapping("/getNation")
+    @RequestMapping(value = "/getNation",method = RequestMethod.GET)
     public ResponseResult getNation(@RequestParam(value = "page", defaultValue = "1") int pageIndex,
                                     @RequestParam(value="size", defaultValue = "20") int pageSize){
         GetPollutantData getPollutantData = new GetPollutantData();
@@ -116,7 +127,7 @@ public class PollutantController {
         Long length = redisTemplate.opsForList().size(key);
         for (Long i = 0L; i < length; i++) {
             JSON json = (JSON) JSON.toJSON(redisTemplate.opsForList().index(key, i));
-            Object javaObject = JSON.toJavaObject(json, Weather24Hours.class);
+            Object javaObject = JSON.toJavaObject(json, PollutantCity.class);
             PollutantCity result = new PollutantCity();
             BeanUtils.copyProperties(javaObject, result);
             redisList.add(result);

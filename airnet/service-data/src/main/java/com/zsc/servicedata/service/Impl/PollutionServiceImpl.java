@@ -63,4 +63,9 @@ public class PollutionServiceImpl implements PollutionService {
         cityMapper.saveSiteOfCity(map.get("city").get(0),map.get("siteName"));
         return map;
     }
+
+    @Override
+    public List<Pollutant> getAllMonitors() {
+        return pollutionMapper.selectAllMonitor();
+    }
 }

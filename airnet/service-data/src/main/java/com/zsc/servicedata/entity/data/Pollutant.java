@@ -28,9 +28,6 @@ public class Pollutant implements Serializable {
     @ApiModelProperty(value = "要检测的城市名称")
     private String area;
 
-    @ApiModelProperty(value = "城市污染检测点名称")
-    private String siteName;
-
     @ApiModelProperty(value = "SO2浓度阈值")
     private Float so2;
 
