@@ -3,26 +3,19 @@ package com.zsc.servicedata.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zsc.servicedata.entity.MonitorMark;
-import com.zsc.servicedata.entity.PollutantCity;
-import com.zsc.servicedata.entity.PollutionEpisode;
-import com.zsc.servicedata.entity.UserMark;
+import com.zsc.servicedata.entity.alarm.MonitorMark;
 import com.zsc.servicedata.entity.data.Pollutant;
-import com.zsc.servicedata.entity.enums.AirQualityEnum;
 import com.zsc.servicedata.service.PollutionService;
 import com.zsc.servicedata.service.UserService;
-import org.apache.tomcat.jni.Poll;
+import model.pollutant.PollutionEpisode;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
-
-import static com.zsc.servicedata.entity.enums.AirQualityEnum.FINE_QUALITY;
 
 @Component
 public class Schedule {
@@ -40,8 +33,7 @@ public class Schedule {
     private UserService userService;
 
 
-    //    @Scheduled(fixedRate = 2000)
-    @Scheduled(fixedRate = 2000000)
+//    @Scheduled(fixedRate = 2000000)
     public void checkIsAlarm() throws IOException {
         //每隔半小时去获取实时数据，与数据库中用户设定作对比，超过预设值就发邮件
         //先从缓存里头获取全国实时排行榜，从排行榜里头获取所有城市的监测点的浓度
@@ -61,7 +53,7 @@ public class Schedule {
         Set<Long> userIdList = new HashSet<>();
         //记录用户所监测的城市和超过阈值的参数值
         //其中的key,String = id + area;
-        Map<UserMark, MonitorMark> markMap = new HashMap<>();
+        Map<Long, MonitorMark> markMap = new HashMap<>();
         //数据库和实时数据进行比对
         cityList.forEach(city -> {
             for (Pollutant pollutant : pollutantList) {
@@ -72,71 +64,67 @@ public class Schedule {
                     int monitorQualityNum = changeIntoQualityNum(pollutant.getQuality());
                     if (cityQualityNum > monitorQualityNum) {
                         userIdList.add(pollutant.getUserId());
-                        markDownOverData(markMap,city,pollutant,"quality");
-//                        MonitorMark monitorMark =  new MonitorMark();
-//                        monitorMark.setArea(pollutant.getArea());
-//                        monitorMark.setAlarmText("当前空气质量："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
-//                        UserMark userMark = new UserMark();
-//                        userMark.setUserId(pollutant.getUserId());
-//                        userMark.setMarkCity(pollutant.getUserId()+pollutant.getArea());
-//                        markMap.put(userMark,monitorMark);
-                        break;
+                        markDownOverData(markMap, city, pollutant, "QUALITY");
                     }
                     if (Float.valueOf(city.getSo2()) > pollutant.getSo2()) {
                         //将该用户记录在需要发送邮件的名单中
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "SO2");
                     }
                     if (Float.valueOf(city.getO3()) > pollutant.getO3()) {
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "O3");
                     }
-                    if (Float.valueOf(city.getPm25()) > pollutant.getPm25()) {
-                        userIdList.add(pollutant.getUserId());
-                        break;
+                    if (city.getPm25().equals("_")) {
+                        city.setPm25("0.0");
+                        if (Float.valueOf(city.getPm25()) > pollutant.getPm25()) {
+                            userIdList.add(pollutant.getUserId());
+                            markDownOverData(markMap, city, pollutant, "PM25");
+                        }
                     }
                     if (Float.valueOf(city.getCo()) > pollutant.getCo()) {
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "CO");
                     }
                     if (Float.valueOf(city.getNo2()) > pollutant.getNo2()) {
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "NO2");
                     }
                     if (Float.valueOf(city.getAqi()) > pollutant.getAqi()) {
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "AQI");
                     }
-                    if (Float.valueOf(city.getPm10()) > pollutant.getPM10()) {
-                        userIdList.add(pollutant.getUserId());
-                        break;
+                    if (city.getPm10().equals("_")) {
+                        city.setPm10("0.0");
+                        if (Float.valueOf(city.getPm10()) > pollutant.getPM10()) {
+                            userIdList.add(pollutant.getUserId());
+                            markDownOverData(markMap, city, pollutant, "PM10");
+                        }
                     }
                     if (Float.valueOf(city.getO3Per8h()) > pollutant.getO3per8h()) {
                         userIdList.add(pollutant.getUserId());
-                        break;
+                        markDownOverData(markMap, city, pollutant, "O3PER8H");
                     }
                 }
             }
         });
-//        System.out.println(userIdList);
-        //发邮件get
+        //发邮件
         //根据用户ID,批量获取其邮件地址
         Map<Long, String> map = userService.getAllUserEmail(userIdList);
         for (Long id : map.keySet()) {
-            for(UserMark userMark:markMap.keySet()){
-                if(id.equals(userMark.getUserId())){
+            for (Long userId : markMap.keySet()) {
+                if (id.equals(userId)) {
                     SimpleMailMessage mailMessage = new SimpleMailMessage();
                     mailMessage.setFrom("Ecochoupipig@163.com");
                     mailMessage.setTo(map.get(id));
                     mailMessage.setSubject("报警邮件");
-                    MonitorMark monitorMark = markMap.get(userMark);
+                    MonitorMark monitorMark = markMap.get(userId);
                     mailMessage.setText(monitorMark.getAlarmText());
                     jms.send(mailMessage);
                 }
             }
         }
     }
-
 
 
     private static int changeIntoQualityNum(String quality) {
@@ -166,68 +154,146 @@ public class Schedule {
         return qualityNum;
     }
 
-    private static Map<UserMark, MonitorMark> markDownOverData(Map<UserMark, MonitorMark> markMap, PollutionEpisode city,Pollutant pollutant,String pollutantName){
-        MonitorMark monitorMark =  new MonitorMark();
+    private static Map<Long, MonitorMark> markDownOverData(Map<Long, MonitorMark> markMap, PollutionEpisode city, Pollutant pollutant, String pollutantName) {
+        MonitorMark monitorMark = new MonitorMark();
         monitorMark.setArea(pollutant.getArea());
         StringBuilder stringBuilder = new StringBuilder();
-        switch (pollutantName){
-            case "quality":{
-                if(markMap.isEmpty()){
-                    stringBuilder.append("您所监测的城市："+pollutant.getArea()+"，当前空气质量："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality()+"\n");
-                }else{
-                    String existedStr = markMap.get(pollutant.getUserId()).getAlarmText()+"\n";
-                    stringBuilder.append(existedStr);
+        switch (pollutantName) {
+            case "QUALITY": {
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前空气质量：" + city.getQuality() + "，超过了您所设置的警报阈值：" + pollutant.getQuality() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前空气质量：" + city.getQuality() + "，超过了您所设置的警报阈值：" + pollutant.getQuality() + "\n");
+                        }
+                    }
                 }
                 monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             }
-            case "so2": {
-                if(markMap==null){
-                    stringBuilder.append("您所监测的城市："+pollutant.getArea()+"，当前SO2浓度：" + city.getQuality() + "，超过了您所设置的警报阈值：" + pollutant.getQuality()+"\n");
-                }else{
-                    String existedStr = markMap.get(pollutant.getUserId()).getAlarmText()+"\n";
-                    stringBuilder.append(existedStr);
+            case "SO2": {
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前SO2的1小时平均浓度：" + city.getSo2() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getSo2() + "\n");
+                } else {
+                    //这里要解决一个用户，多个城市问题，应该还有一个城市，多个用户的问题
+                    for (Long userId : markMap.keySet()) {
+                        //缓存里有这个ID，就直接append
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前SO2的1小时平均浓度：" + city.getSo2() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getSo2() + "\n");
+                        }
+                    }
                 }
                 monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             }
             case "O3": {
-                if(markMap==null){
-                    stringBuilder.append("您所监测的城市："+pollutant.getArea()+"，当前O3浓度：" + city.getQuality() + "，超过了您所设置的警报阈值：" + pollutant.getQuality()+"\n");
-                }else{
-                    String existedStr = markMap.get(pollutant.getUserId()).getAlarmText()+"\n";
-                    stringBuilder.append(existedStr);
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前O3的1小时平均浓度：" + city.getO3() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getO3() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前O3的1小时平均浓度：" + city.getO3() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getO3() + "\n");
+                        }
+                    }
                 }
                 monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             }
             case "PM25":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，当前pm2.5浓度："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm2.5的1小时平均浓度：" + city.getPm25() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPm25() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm2.5的1小时平均浓度：" + city.getPm25() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPm25() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             case "CO":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，当前CO浓度："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm2.5的1小时平均浓度：" + city.getPm25() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPm25() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm2.5的1小时平均浓度：" + city.getPm25() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPm25() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             case "NO2":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，当前NO2浓度："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前NO2浓度的1小时平均浓度：" + city.getNo2() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getNo2() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前NO2浓度的1小时平均浓度：" + city.getNo2() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getNo2() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             case "AQI":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，您所监测的城市："+pollutant.getArea()+"，当前AQI指数："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前AQI指数：" + city.getAqi() + "，超过了您所设置的警报阈值：" + pollutant.getAqi() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前AQI指数：" + city.getAqi() + "，超过了您所设置的警报阈值：" + pollutant.getAqi() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             case "PM10":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，您所监测的城市："+pollutant.getArea()+"，当前pm10的浓度："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm10的1小时平均浓度：" + city.getQuality() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPM10() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前pm10的1小时平均浓度：" + city.getQuality() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getPM10() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             case "O3PER8H":
-                monitorMark.setAlarmText("您所监测的城市："+pollutant.getArea()+"，当前O3每8小时的浓度："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
+                if (markMap.isEmpty()) {
+                    stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前O3的8小时滑动平均浓度：" + city.getO3Per8h() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getO3per8h() + "\n");
+                } else {
+                    for (Long userId : markMap.keySet()) {
+                        if (userId.equals(pollutant.getUserId())) {
+                            String existedStr = markMap.get(pollutant.getUserId()).getAlarmText() + "\n";
+                            stringBuilder.append(existedStr);
+                            stringBuilder.append("您所监测的城市：" + pollutant.getArea() + "，当前O3的8小时滑动平均浓度：" + city.getO3Per8h() + " ug/m3，超过了您所设置的警报阈值：" + pollutant.getO3per8h() + "\n");
+                        }
+                    }
+                }
+                monitorMark.setAlarmText(stringBuilder.toString());
                 break;
             default:
                 break;
         }
-//        monitorMark.setAlarmText("当前空气质量："+city.getQuality()+"，超过了您所设置的警报阈值："+pollutant.getQuality());
-        UserMark userMark = new UserMark();
-        userMark.setUserId(pollutant.getUserId());
-        userMark.setMarkCity(pollutant.getUserId()+pollutant.getArea());
-//        monitorMark.setAlarmText(stringBuilder.toString());
-        markMap.put(userMark,monitorMark);
+        markMap.put(pollutant.getUserId(), monitorMark);
         return markMap;
     }
 }

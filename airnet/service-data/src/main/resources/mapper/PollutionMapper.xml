@@ -5,7 +5,7 @@
 <mapper namespace="com.zsc.servicedata.mapper.PollutionMapper">
 
     <select id="selectMonitorListByUser" parameterType="Long" resultType="com.zsc.servicedata.entity.data.Pollutant">
-        select * from pollutant where userId = #{userId}
+        select * from pollutantmonitor where userId = #{userId}
     </select>
 
     <insert id="insertMonitorPoint" parameterType="com.zsc.servicedata.entity.param.PollutionMonitorParam">

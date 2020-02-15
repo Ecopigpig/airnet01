@@ -19,6 +19,7 @@
         <module>service-ribbon</module>
         <module>service-zuul</module>
         <module>service-data</module>
+        <module>service-common</module>
     </modules>
 
     <parent>
@@ -53,5 +54,17 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--&lt;!&ndash;针对打包&ndash;&gt;-->
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<skipTests>true</skipTests>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
 
 </project>

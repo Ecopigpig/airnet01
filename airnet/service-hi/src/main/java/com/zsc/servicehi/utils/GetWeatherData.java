@@ -2,15 +2,14 @@ package com.zsc.servicehi.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zsc.servicehi.model.weather.Weather24Hours;
-import com.zsc.servicehi.model.weather.WeatherIn15Days;
+import model.weather.Weather24Hours;
+import model.weather.WeatherIn15Days;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.ParseException;
 import java.util.*;
 
 public class GetWeatherData {

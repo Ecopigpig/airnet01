@@ -1,11 +1,8 @@
 package com.zsc.servicedata.service;
 
-import com.zsc.servicedata.entity.UserEntity;
 import com.zsc.servicedata.entity.data.UserInfo;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,4 +14,18 @@ public interface UserService {
      * @return
      */
     Map<Long,String> getAllUserEmail(Set<Long> userIdList);
+
+    /**
+     * 根据用户id获取用户实体
+     * @param userId
+     * @return
+     */
+    UserInfo getUserById(Long userId);
+
+    /**
+     * 根据用户的登录信息确认是否存在该用户
+     * @param userInfo
+     * @return
+     */
+    UserInfo confirmUser(UserInfo userInfo);
 }

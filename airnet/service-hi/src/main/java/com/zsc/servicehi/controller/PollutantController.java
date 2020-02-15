@@ -1,11 +1,10 @@
 package com.zsc.servicehi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zsc.servicehi.model.air.AirQuality;
-import com.zsc.servicehi.model.pollutant.PollutantCity;
-import com.zsc.servicehi.model.pollutant.PollutionSite;
+import model.air.AirQuality;
+import model.pollutant.PollutantCity;
+import model.pollutant.PollutionSite;
 import com.zsc.servicehi.model.result.ResponseResult;
-import com.zsc.servicehi.model.weather.Weather24Hours;
 import com.zsc.servicehi.utils.GetPollutantData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

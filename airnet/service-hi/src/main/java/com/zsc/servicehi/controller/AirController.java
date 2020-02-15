@@ -1,17 +1,14 @@
 package com.zsc.servicehi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zsc.servicehi.model.air.AirQuality;
-import com.zsc.servicehi.model.pollutant.PollutantCity;
+import model.air.AirQuality;
 import com.zsc.servicehi.model.result.ResponseResult;
 import com.zsc.servicehi.utils.GetAirData;
-import com.zsc.servicehi.utils.GetPollutantData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;

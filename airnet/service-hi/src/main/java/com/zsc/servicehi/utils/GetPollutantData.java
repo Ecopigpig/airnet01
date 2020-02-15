@@ -2,14 +2,13 @@ package com.zsc.servicehi.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zsc.servicehi.model.pollutant.PollutantCity;
-import com.zsc.servicehi.model.pollutant.PollutionEpisode;
-import com.zsc.servicehi.model.pollutant.PollutionSite;
+import model.pollutant.PollutantCity;
+import model.pollutant.PollutionSite;
+import model.pollutant.PollutionEpisode;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;

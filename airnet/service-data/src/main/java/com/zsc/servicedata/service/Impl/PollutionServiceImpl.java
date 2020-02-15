@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service("pollution")
+@Service("pollutionService")
 public class PollutionServiceImpl implements PollutionService {
 
     @Resource

@@ -19,4 +19,7 @@ public interface UserMapper {
     @MapKey("id")
     Map<Long, UserInfo> selectAllUserEmail(@Param("list") Set<Long> userIdList);
 
+    UserInfo selectUserById(@Param("id")Long id);
+
+    UserInfo confirmUser(UserInfo userInfo);
 }

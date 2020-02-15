@@ -1,4 +1,4 @@
-package com.zsc.servicehi.model.pollutant;
+package model.pollutant;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

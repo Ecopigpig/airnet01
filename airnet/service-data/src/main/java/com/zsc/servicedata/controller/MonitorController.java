@@ -1,18 +1,17 @@
 package com.zsc.servicedata.controller;
 
 import com.zsc.servicedata.entity.data.Pollutant;
-import com.zsc.servicedata.entity.UserEntity;
-import com.zsc.servicedata.entity.param.AlarmParam;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
 import com.zsc.servicedata.entity.result.ResponseResult;
 import com.zsc.servicedata.service.Impl.UserServiceImpl;
 import com.zsc.servicedata.service.PollutionService;
+import com.zsc.servicedata.service.UserService;
+import com.zsc.servicedata.tag.UserLoginToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,11 +24,12 @@ import java.util.Map;
 public class MonitorController {
 
     @Autowired
-    private UserServiceImpl userServer;
+    private UserService userService;
 
     @Resource
     private PollutionService pollutionService;
 
+    @UserLoginToken
     @ApiOperation(value = "根据用户ID获取用户的监测情况列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long")
@@ -47,6 +47,7 @@ public class MonitorController {
         return result;
     }
 
+    @UserLoginToken
     @ApiOperation(value = "用户自行添加监测点")
     @RequestMapping(value = "/setMonitor",method = RequestMethod.POST)
     public ResponseResult setMonitor(@RequestBody List<PollutionMonitorParam> paramList){

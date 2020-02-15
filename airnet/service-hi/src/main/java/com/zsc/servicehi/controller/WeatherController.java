@@ -1,12 +1,9 @@
 package com.zsc.servicehi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.zsc.servicehi.model.result.ResponseResult;
-import com.zsc.servicehi.model.transfer.EntityTest;
-import com.zsc.servicehi.model.weather.Weather24Hours;
-import com.zsc.servicehi.model.weather.WeatherIn15Days;
+import model.weather.Weather24Hours;
+import model.weather.WeatherIn15Days;
 import com.zsc.servicehi.utils.GetWeatherData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

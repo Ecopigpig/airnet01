@@ -1,4 +1,4 @@
-package com.zsc.servicedata.entity;
+package com.zsc.servicedata.entity.alarm;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;

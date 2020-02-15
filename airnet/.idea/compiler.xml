@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eureka-server" />
+        <module name="service-common" />
         <module name="service-data" />
         <module name="service-feign" />
         <module name="service-hi" />
@@ -22,9 +23,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="eureka-server" options="-parameters" />
-      <module name="service-data" options="-parameters" />
+      <module name="service-common" options="-parameters -extdirs F:\#########AAAAAAAAAAAA毕设\how2j-springcloud\学习方志朋-SpringCloud搭建\airnet\service-common/src/main/resources/lib" />
+      <module name="service-data" options="-parameters -extdirs F:\#########AAAAAAAAAAAA毕设\how2j-springcloud\学习方志朋-SpringCloud搭建\airnet\service-data/src/main/resources/lib" />
       <module name="service-feign" options="-parameters" />
-      <module name="service-hi" options="-parameters" />
+      <module name="service-hi" options="-parameters -extdirs F:\#########AAAAAAAAAAAA毕设\how2j-springcloud\学习方志朋-SpringCloud搭建\airnet\service-hi/src/main/resources/lib" />
       <module name="service-miya" options="-parameters" />
       <module name="service-ribbon" options="-parameters" />
       <module name="service-zuul" options="-parameters" />

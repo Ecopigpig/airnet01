@@ -1,15 +1,10 @@
 package com.zsc.servicedata.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.zsc.servicedata.entity.Weather24Hours;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.*;
 
 @RequestMapping("/redis")
 @RestController

@@ -11,11 +11,20 @@
         <result column="email" property="email" javaType="java.lang.String"/>
         <result column="role" property="role" javaType="java.lang.Integer"/>
     </resultMap>
+
     <select id="selectAllUserEmail" resultMap="userInfoMap" parameterType="Long">
         select * from userInfo where id in
         <foreach collection="list" item="id" index="index"
                  open="(" close=")" separator=",">
             #{id}
         </foreach>
+    </select>
+
+    <select id="selectUserById" resultType="com.zsc.servicedata.entity.data.UserInfo">
+        select * from userInfo where id = #{id}
+    </select>
+
+    <select id="confirmUser" resultType="com.zsc.servicedata.entity.data.UserInfo" parameterType="com.zsc.servicedata.entity.data.UserInfo">
+        select * from userInfo where username = #{username} and password = #{password}
     </select>
 </mapper>

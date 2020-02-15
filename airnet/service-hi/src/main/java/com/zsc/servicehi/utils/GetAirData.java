@@ -1,10 +1,8 @@
 package com.zsc.servicehi.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zsc.servicehi.model.air.AirQuality;
-import com.zsc.servicehi.model.pollutant.PollutantCity;
-import com.zsc.servicehi.model.pollutant.PollutionEpisode;
+import model.air.AirQuality;
+import model.pollutant.PollutionEpisode;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;

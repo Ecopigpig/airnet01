@@ -1,9 +1,9 @@
-package com.zsc.servicehi.model.air;
+package model.air;
 
-import com.zsc.servicehi.model.pollutant.PollutionEpisode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import model.pollutant.PollutionEpisode;
 
 @Data
 @ApiModel(value = "城市空气质量")

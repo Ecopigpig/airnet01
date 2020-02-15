@@ -1,4 +1,4 @@
-package com.zsc.servicehi.model.pollutant;
+package model.pollutant;
 
 /**
  * 城市底下的污染检测点
