@@ -1,4 +1,4 @@
-package com.zsc.servicedata.utils;
+package com.zsc.servicedata.utils.alarm;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,6 +10,7 @@ import com.zsc.servicedata.service.UserService;
 import model.pollutant.PollutionEpisode;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -296,4 +297,22 @@ public class Schedule {
         markMap.put(pollutant.getUserId(), monitorMark);
         return markMap;
     }
+
+//    @Scheduled(fixedRate = 2000000)
+    @Scheduled(cron = "0 0 20 * * ?")// 每天下午8点
+    public void markHistory() throws IOException {
+        String result = restTemplate.getForObject("http://localhost:8763/pollutant/offerNationPollutant", String.class);
+        List<PollutionEpisode> cityList = new ArrayList<>();
+        JSONArray jsonArray = JSONObject.parseArray(result);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject job = jsonArray.getJSONObject(i);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String str = job.getString("pollutionEpisode");
+            PollutionEpisode city = objectMapper.readValue(str, PollutionEpisode.class);
+            cityList.add(city);
+        }
+        pollutionService.markHistory(cityList);
+    }
+
+
 }

@@ -63,6 +63,9 @@ public class MonitorController {
     }
 
     @ApiOperation(value = "通过城市名称获取其下的监测点列表" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "city", value = "城市名称", required = true, dataType = "String")
+    })
     @RequestMapping(value = "/getMonitorPointInCity",method = RequestMethod.GET)
     public ResponseResult getMonitorPointInCity(@RequestParam String city) throws Exception {
         ResponseResult result = new ResponseResult();

@@ -10,7 +10,12 @@
         <result column="password" property="password" javaType="java.lang.String"/>
         <result column="email" property="email" javaType="java.lang.String"/>
         <result column="role" property="role" javaType="java.lang.Integer"/>
+        <result column="auth" property="auth" javaType="java.lang.Integer"/>
     </resultMap>
+
+    <update id="updateToken">
+        update userInfo set token = #{token} where userId = #{userId}
+    </update>
 
     <select id="selectAllUserEmail" resultMap="userInfoMap" parameterType="Long">
         select * from userInfo where id in
@@ -26,5 +31,8 @@
 
     <select id="confirmUser" resultType="com.zsc.servicedata.entity.data.UserInfo" parameterType="com.zsc.servicedata.entity.data.UserInfo">
         select * from userInfo where username = #{username} and password = #{password}
+    </select>
+    <select id="selectAllUsers" resultType="com.zsc.servicedata.entity.data.UserInfo">
+        select * from userInfo
     </select>
 </mapper>

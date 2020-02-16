@@ -1,4 +1,4 @@
-package com.zsc.servicehi.model.result;
+package model.result;
 
 import lombok.Data;
 

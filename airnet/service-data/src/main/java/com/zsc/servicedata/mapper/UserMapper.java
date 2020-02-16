@@ -22,4 +22,8 @@ public interface UserMapper {
     UserInfo selectUserById(@Param("id")Long id);
 
     UserInfo confirmUser(UserInfo userInfo);
+
+    int updateToken(Long userId, String token);
+
+    List<UserInfo> selectAllUsers();
 }

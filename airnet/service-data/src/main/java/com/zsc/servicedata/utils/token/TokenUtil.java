@@ -1,4 +1,4 @@
-package com.zsc.servicedata.utils;
+package com.zsc.servicedata.utils.token;
 
 import com.auth0.jwt.JWT;
 import org.springframework.web.context.request.RequestContextHolder;

@@ -17,7 +17,35 @@
         </foreach>
     </insert>
 
+    <insert id="insertPollutantHistory" parameterType="model.pollutant.PollutionEpisode">
+        insert into pollutanthistory (so2,pm25,publishTime,primaryPollutant,
+        co,area,no2,aqi,quality,pm10,o3per8h) values
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.so2},#{item.pm25},#{item.ct},#{item.primaryPollutant},
+            #{item.co},#{item.area},#{item.no2},#{item.aqi},
+            #{item.quality},#{item.pm10},#{item.o3Per8h} )
+        </foreach>
+    </insert>
+
     <select id="selectAllMonitor" resultType="com.zsc.servicedata.entity.data.Pollutant">
         select * from pollutantmonitor
+    </select>
+
+    <resultMap id="pollutionEpisodeMap" type="model.pollutant.PollutionEpisode">
+        <id column="id" property="id" javaType="Long"/>
+        <result column="so2" property="so2" javaType="String"/>
+        <result column="pm25" property="pm25" javaType="String"/>
+        <result column="publishTime" property="ct" javaType="String"/>
+        <result column="co" property="co" javaType="String"/>
+        <result column="area" property="area" javaType="String"/>
+        <result column="no2" property="no2" javaType="String"/>
+        <result column="aqi" property="aqi" javaType="String"/>
+        <result column="quality" property="quality" javaType="String"/>
+        <result column="pm10" property="pm10" javaType="String"/>
+        <result column="o3per8h" property="o3Per8h" javaType="String"/>
+    </resultMap>
+
+    <select id="selectAllHistory" resultMap="pollutionEpisodeMap">
+        select * from pollutanthistory
     </select>
 </mapper>

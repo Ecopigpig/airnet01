@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,5 +38,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo confirmUser(UserInfo userInfo) {
         return userMapper.confirmUser(userInfo);
+    }
+
+    @Override
+    public int insertToken(Long userId, String token) {
+        return userMapper.updateToken(userId,token);
+    }
+
+    @Override
+    public List<UserInfo> getAllUsers() {
+        return userMapper.selectAllUsers();
     }
 }

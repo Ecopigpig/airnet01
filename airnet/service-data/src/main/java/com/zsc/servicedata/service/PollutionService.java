@@ -2,6 +2,7 @@ package com.zsc.servicedata.service;
 
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import model.pollutant.PollutionEpisode;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,12 @@ public interface PollutionService {
      * @return
      */
     List<Pollutant> getAllMonitors();
+
+    /**
+     * 把全国城市的污染情况记录在数据库中,称为历史记录
+     * @param cityList
+     */
+    void markHistory(List<PollutionEpisode> cityList);
+
+    List<PollutionEpisode> getPollutantHistory();
 }

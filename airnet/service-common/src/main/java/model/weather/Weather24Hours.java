@@ -1,4 +1,4 @@
-package com.zsc.servicehi.model.weather;
+package model.weather;
 
 import lombok.Data;
 

@@ -2,6 +2,7 @@ package com.zsc.servicedata.mapper;
 
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import model.pollutant.PollutionEpisode;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,11 @@ public interface PollutionMapper {
 //    @Select("select * from pollutant where userId = #{userId}")
     List<Pollutant> selectMonitorListByUser(Long userId);
 
-    int insertMonitorPoint(@Param("list") List<PollutionMonitorParam> paramList);
+    void insertMonitorPoint(@Param("list") List<PollutionMonitorParam> paramList);
 
     List<Pollutant> selectAllMonitor();
+
+    void insertPollutantHistory(@Param("list")List<PollutionEpisode> episodeList);
+
+    List<PollutionEpisode> selectAllHistory();
 }

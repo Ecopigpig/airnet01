@@ -3,6 +3,7 @@ package com.zsc.servicedata.service;
 import com.zsc.servicedata.entity.data.UserInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,4 +29,14 @@ public interface UserService {
      * @return
      */
     UserInfo confirmUser(UserInfo userInfo);
+
+    /**
+     * 把用户申请通过的Token记录在数据库中
+     * @param userId
+     * @param token
+     * @return
+     */
+    int insertToken(Long userId,String token);
+
+    List<UserInfo> getAllUsers();
 }

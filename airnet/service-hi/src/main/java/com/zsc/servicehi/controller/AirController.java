@@ -2,7 +2,7 @@ package com.zsc.servicehi.controller;
 
 import com.alibaba.fastjson.JSON;
 import model.air.AirQuality;
-import com.zsc.servicehi.model.result.ResponseResult;
+import model.result.ResponseResult;
 import com.zsc.servicehi.utils.GetAirData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

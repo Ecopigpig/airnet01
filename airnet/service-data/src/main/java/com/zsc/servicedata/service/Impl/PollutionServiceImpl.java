@@ -5,6 +5,7 @@ import com.zsc.servicedata.entity.param.PollutionMonitorParam;
 import com.zsc.servicedata.mapper.CityMapper;
 import com.zsc.servicedata.mapper.PollutionMapper;
 import com.zsc.servicedata.service.PollutionService;
+import model.pollutant.PollutionEpisode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,15 @@ public class PollutionServiceImpl implements PollutionService {
     @Override
     public List<Pollutant> getAllMonitors() {
         return pollutionMapper.selectAllMonitor();
+    }
+
+    @Override
+    public void markHistory(List<PollutionEpisode> cityList) {
+        pollutionMapper.insertPollutantHistory(cityList);
+    }
+
+    @Override
+    public List<PollutionEpisode> getPollutantHistory() {
+        return pollutionMapper.selectAllHistory();
     }
 }

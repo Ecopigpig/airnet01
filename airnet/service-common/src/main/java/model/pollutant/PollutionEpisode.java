@@ -9,6 +9,8 @@ import lombok.Data;
 @ApiModel(value = "基本污染指数模型")
 public class PollutionEpisode {
 
+    private Long id;
+
     @ApiModelProperty(value = "二氧化硫1小时平均浓度，ug/m3")
     private String so2;
 
