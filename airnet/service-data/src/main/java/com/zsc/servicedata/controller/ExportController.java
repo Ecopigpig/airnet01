@@ -2,16 +2,14 @@ package com.zsc.servicedata.controller;
 
 import com.zsc.servicedata.service.PollutionService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import model.pollutant.PollutionEpisode;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +26,8 @@ public class ExportController {
     private PollutionService pollutionService;
 
     //尝试excel的导出
-    @RequestMapping("/history")
+    @ApiOperation(value = "导出全国的历史污染情况")
+    @RequestMapping(value = "/history",method = RequestMethod.GET)
     public void exportHistory(HttpServletResponse response) throws IOException{
         List<PollutionEpisode> pollutionEpisodeList = pollutionService.getPollutantHistory();
 

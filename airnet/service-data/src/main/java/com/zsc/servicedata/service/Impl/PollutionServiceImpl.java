@@ -46,7 +46,7 @@ public class PollutionServiceImpl implements PollutionService {
             paramList.forEach(param -> {
                 if(param.getArea().equals("")||param.getArea()==null){
                     try {
-                        throw new Exception("成功");
+                        throw new Exception("城市名称不能为空");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

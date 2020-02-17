@@ -47,7 +47,7 @@ public class WeatherController {
     StringRedisTemplate stringRedisTemplate;
 
     //这个链接能拿到数据
-    @ApiOperation(value = "根据城市中文名获取该城市的未来24小时天气情况")
+    @ApiOperation(value = "根据城市中文名获取该城市的未来24小时天气情况,专供服务调用")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "city", value = "城市名称", required = true, dataType = "String")
     })

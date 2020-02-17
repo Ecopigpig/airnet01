@@ -13,7 +13,6 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 3680521484767029494L;
 
-    @NotNull(message = "id不能为空")
     @ApiModelProperty(value = "id")
     private Long id;
 

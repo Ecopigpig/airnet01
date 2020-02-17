@@ -14,7 +14,7 @@
     </resultMap>
 
     <update id="updateToken">
-        update userInfo set token = #{token} where userId = #{userId}
+        update userInfo set token = #{token} where id = #{userId}
     </update>
 
     <select id="selectAllUserEmail" resultMap="userInfoMap" parameterType="Long">
@@ -30,8 +30,24 @@
     </select>
 
     <select id="confirmUser" resultType="com.zsc.servicedata.entity.data.UserInfo" parameterType="com.zsc.servicedata.entity.data.UserInfo">
-        select * from userInfo where username = #{username} and password = #{password}
+        select * from userInfo
+        <where>
+            <if test="id != null and id !='' ">
+               and id = #{id}
+            </if>
+            <if test="password != null and password !='' ">
+               and password=#{password}
+            </if>
+            <if test="email!=null and email!=''">
+              and email=#{email}
+            </if>
+            <if test="username != null and username !='' ">
+                and username=#{username}
+            </if>
+        </where>
     </select>
+
+
     <select id="selectAllUsers" resultType="com.zsc.servicedata.entity.data.UserInfo">
         select * from userInfo
     </select>

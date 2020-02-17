@@ -300,7 +300,7 @@ public class Schedule {
 
 //    @Scheduled(fixedRate = 2000000)
     @Scheduled(cron = "0 0 20 * * ?")// 每天下午8点
-    public void markHistory() throws IOException {
+    public void markPollutantHistory() throws IOException {
         String result = restTemplate.getForObject("http://localhost:8763/pollutant/offerNationPollutant", String.class);
         List<PollutionEpisode> cityList = new ArrayList<>();
         JSONArray jsonArray = JSONObject.parseArray(result);
@@ -314,5 +314,18 @@ public class Schedule {
         pollutionService.markHistory(cityList);
     }
 
-
+    @Scheduled(cron = "0 0 20 * * ?")// 每天下午8点
+    public void markAirHistory() throws IOException {
+        String result = restTemplate.getForObject("http://localhost:8763/pollutant/offerNationPollutant", String.class);
+        List<PollutionEpisode> cityList = new ArrayList<>();
+        JSONArray jsonArray = JSONObject.parseArray(result);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject job = jsonArray.getJSONObject(i);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String str = job.getString("pollutionEpisode");
+            PollutionEpisode city = objectMapper.readValue(str, PollutionEpisode.class);
+            cityList.add(city);
+        }
+        pollutionService.markHistory(cityList);
+    }
 }

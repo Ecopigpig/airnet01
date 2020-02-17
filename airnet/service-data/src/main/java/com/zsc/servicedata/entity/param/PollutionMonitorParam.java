@@ -26,10 +26,6 @@ public class PollutionMonitorParam implements Serializable {
     @ApiModelProperty(value = "要检测的城市名称")
     private String area;
 
-    @NotEmpty(message = "检测点名称不能为空")
-    @ApiModelProperty(value = "城市污染检测点名称")
-    private String siteName;
-
     @ApiModelProperty(value = "SO2浓度阈值")
     private Float so2;
 

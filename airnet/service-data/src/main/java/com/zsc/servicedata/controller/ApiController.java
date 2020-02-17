@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.result.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "ApiController",tags = "API控制器")
 @RestController
@@ -24,9 +21,12 @@ public class ApiController {
     TokenService tokenService;
 
     @ApiOperation(value = "用户获取其申请的API")
-    @RequestMapping(value = "/getApi", method = {RequestMethod.GET,RequestMethod.POST})
-    public ResponseResult getApi(@RequestBody UserInfo user) {
+    @RequestMapping(value = "/getApi", method = RequestMethod.GET)
+    public ResponseResult getApi(@RequestParam("userId") Long userId,@RequestParam("password")String password) {
         ResponseResult result = new ResponseResult();
+        UserInfo user = new UserInfo();
+        user.setId(userId);
+        user.setPassword(password);
         UserInfo userForBase = userService.confirmUser(user);
         result.setMsg(false);
         if(userForBase == null){
@@ -37,7 +37,7 @@ public class ApiController {
         }else{
             //数据库中存在这个用户,那么把这个用户插入到申请API的表中
             //判断是否允许申请API
-            if(userForBase.getAuth().equals(1)){
+            if(userForBase.getAuth().equals(0)){
                 result.setData("请先去申请API,审核通过后即可获得API");
                 return result;
             }else{

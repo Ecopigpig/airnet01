@@ -38,6 +38,7 @@ public class PollutantController {
      * @param city
      * @return
      */
+    @ApiOperation(value = "通过城市名称获取该城市下的检测点名称,专供服务调用")
     @RequestMapping(value = "/offerPollutantSites",method = RequestMethod.GET)
     public Map<String,List<String>> offerPollutantSites(@RequestParam String city){
         GetPollutantData getPollutantData = new GetPollutantData();
@@ -71,6 +72,7 @@ public class PollutantController {
 
 
     //直接获取实时的数据吧，不要经过缓存了
+    @ApiOperation(value = "全国污染排行榜,专供服务调用")
     @RequestMapping(value = "/offerNationPollutant",method = RequestMethod.GET)
     public List<PollutantCity> offerNationPollutant(){
         GetPollutantData getPollutantData = new GetPollutantData();
@@ -147,7 +149,7 @@ public class PollutantController {
         result.setMsg(false);
         if(pollutantCityList!=null){
             result.setMsg(true);
-            result.setTotal(Long.valueOf(pageList.size()));
+            result.setTotal(Long.valueOf(pollutantCityList.size()));
         }
         result.setData(pageList);
         return result;

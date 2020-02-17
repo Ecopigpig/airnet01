@@ -30,13 +30,13 @@ public class LoginController {
 
 
     @ApiOperation(value = "用户登录")
-    @RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult login(@RequestBody UserInfo user) {
         ResponseResult result = new ResponseResult();
         JSONObject jsonObject = new JSONObject();
         UserInfo userForBase = userService.confirmUser(user);
         result.setMsg(false);
-        if (userForBase == null) {
+         if (userForBase == null) {
             jsonObject.put("message", "登录失败,用户不存在");
             result.setData(jsonObject);
             return result;
@@ -64,7 +64,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "用户登出")
-    @RequestMapping(value = "/logout", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseResult logout(@RequestBody UserInfo user) {
         JSONObject jsonObject = new JSONObject();
         ResponseResult result = new ResponseResult();
