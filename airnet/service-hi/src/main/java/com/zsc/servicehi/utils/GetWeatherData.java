@@ -195,5 +195,4 @@ public class GetWeatherData {
         }
         return weatherIn15DaysList;
     }
-
 }

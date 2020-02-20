@@ -137,4 +137,45 @@ public class WeatherController {
         result.setData(weatherIn15DaysList);
         return result;
     }
+
+    //特定城市的实时天气情况
+    @ApiOperation(value = "根据城市中文名获取该城市的实时天气情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "city", value = "城市名称", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/getActualTimeWeather",method = RequestMethod.GET)
+    public ResponseResult getActualTimeWeather(@RequestParam String city) {
+        GetWeatherData getWeatherData = new GetWeatherData();
+        List<WeatherIn15Days> weatherIn15DaysList = getWeatherData.getWeatherIn15Days(city);
+        List<WeatherIn15Days> redisList = new ArrayList<>();
+        //每次响应都要去redis看看有没有这个value可以去取
+        String key = city + "15DayWeather";
+        Long length = redisTemplate.opsForList().size(key);
+        for (Long i = 0L; i < length; i++) {
+            JSON json = (JSON) JSON.toJSON(redisTemplate.opsForList().index(key, i));
+            Object javaObject = JSON.toJavaObject(json, WeatherIn15Days.class);
+            WeatherIn15Days result = new WeatherIn15Days();
+            BeanUtils.copyProperties(javaObject, result);
+            redisList.add(result);
+        }
+        if (redisList.size() == 0) {
+            //没有缓存就存进去
+            weatherIn15DaysList = getWeatherData.getWeatherIn15Days(city);
+            weatherIn15DaysList.forEach(item -> {
+                redisTemplate.opsForList().rightPush(key, item);
+            });
+        } else {
+            //有缓存就取出来
+            weatherIn15DaysList.addAll(redisList);
+        }
+        stringRedisTemplate.expire(key,30,TimeUnit.MINUTES);
+
+        ResponseResult result = new ResponseResult();
+        result.setMsg(false);
+        if (weatherIn15DaysList != null) {
+            result.setMsg(true);
+        }
+        result.setData(weatherIn15DaysList);
+        return result;
+    }
 }
