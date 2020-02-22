@@ -31,10 +31,6 @@ public class PollutionServiceImpl implements PollutionService {
     @Resource
     private CityMapper cityMapper;
 
-    @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
 
     @Override
     public List<Pollutant> getMonitorListByUser(Long userId) {

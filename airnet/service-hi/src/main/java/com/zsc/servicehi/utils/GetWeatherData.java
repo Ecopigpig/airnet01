@@ -2,8 +2,7 @@ package com.zsc.servicehi.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import model.weather.Weather24Hours;
-import model.weather.WeatherIn15Days;
+import model.weather.*;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -194,5 +193,110 @@ public class GetWeatherData {
             return weatherIn15DaysList;
         }
         return weatherIn15DaysList;
+    }
+
+    public List<AreaCode> getAreaCode(String city){
+        List<AreaCode> areaCodeList = new ArrayList<>();
+        //请求地址设置
+        String url = "http://api.apishop.net/common/weather/getAreaID";
+        //请求方法设置
+        String requestMethod = "POST";
+        //请求头部设置
+        Map<String, String> headers = new HashMap<String, String>();
+        //请求参数设置
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("apiKey", "ElSPAFj03a93fd9040e1d65352247eb7c535f3f5ee5752c");
+        params.put("area", city);
+        String result = proxyToDesURL(requestMethod, url, headers, params);
+        if (result != null) {
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            String status_code = jsonObject.getString("statusCode");
+            if (status_code.equals("000000")) {
+                // 状态码为000000, 说明请求成功
+                JSONObject jsonResult = jsonObject.getJSONObject("result");
+                String codeList = jsonResult.getString("list");
+                System.out.println(codeList);
+                List<Map<String, JSONObject>> list = JSON.parseObject(codeList, List.class);
+                for (Map<String, JSONObject> objectMap : list) {
+                    AreaCode areaCode = new AreaCode();
+                    JSONObject object = objectMap.get("cityInfo");
+                    areaCode.setCity(object.getString("c5"));
+                    areaCode.setArea(object.getString("c3"));
+                    areaCode.setAreaCode(object.getString("c11"));
+                    areaCode.setPostalCode(object.getString("c12"));
+                    areaCodeList.add(areaCode);
+                }
+
+            } else {
+                // 状态码非000000, 说明请求失败
+                return areaCodeList;
+            }
+        } else {
+            // 返回内容异常，发送请求失败，以下可根据业务逻辑自行修改
+            return areaCodeList;
+        }
+        return areaCodeList;
+    }
+
+    public AutalTimeWeather getAutalTimeWeather(String code){
+        AutalTimeWeather autalTimeWeather = new AutalTimeWeather();
+        //请求地址设置
+        String url = "http://api.apishop.net/common/weather/getWeatherByPhonePostCode";
+        //请求方法设置
+        String requestMethod = "POST";
+        //请求头部设置
+        Map<String, String> headers = new HashMap<String, String>();
+        //请求参数设置
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("apiKey", "ElSPAFj03a93fd9040e1d65352247eb7c535f3f5ee5752c");
+        params.put("need3HourForcast","0");
+        params.put("needAlarm","1");
+        params.put("needHourData","0");
+        params.put("needIndex","1");
+        params.put("needMoreDay","0");
+        if(code.length()==6) {
+            params.put("phoneCode", code);
+        }else {
+            params.put("postCode", code);
+        }
+        String result = proxyToDesURL(requestMethod, url, headers, params);
+        if (result != null) {
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            String status_code = jsonObject.getString("statusCode");
+            if (status_code.equals("000000")) {
+                // 状态码为000000, 说明请求成功
+                JSONObject jsonResult = jsonObject.getJSONObject("result");
+                String alarmList = jsonResult.getString("alarmList");
+                JSONObject indexResult = jsonResult.getJSONObject("f1").getJSONObject("index");
+                System.out.println(alarmList);
+                List<Map<String, Object>> aList = JSON.parseObject(alarmList, List.class);
+                List<WeatherAlarm> weatherAlarmList = new ArrayList<>();
+                List<WeatherTip> weatherTipList = new ArrayList<>();
+                for (Map<String, Object> objectMap : aList) {
+                    WeatherAlarm weatherAlarm = new WeatherAlarm();
+                    weatherAlarm.setIssueTime(objectMap.get("issueTime").toString());
+                    weatherAlarm.setIssueContent(objectMap.get("issueContent").toString());
+                    weatherAlarm.setSignalLevel(objectMap.get("signalLevel").toString());
+                    weatherAlarm.setSignalType(objectMap.get("signalType").toString());
+                    weatherAlarmList.add(weatherAlarm);
+                }
+//                for (Map<String, JSONObject> objectMap : list) {
+//                    AreaCode areaCode = new AreaCode();
+//                    JSONObject object = objectMap.get("cityInfo");
+//                    areaCode.setCity(object.getString("c5"));
+//                    areaCode.setArea(object.getString("c3"));
+//                    areaCode.setAreaCode(object.getString("c11"));
+//                    areaCode.setPostalCode(object.getString("c12"));
+//                }
+
+            } else {
+                // 状态码非000000, 说明请求失败
+                return autalTimeWeather;
+            }
+        } else {
+            // 返回内容异常，发送请求失败，以下可根据业务逻辑自行修改
+            return autalTimeWeather;
+        }
+        return autalTimeWeather;
     }
 }
