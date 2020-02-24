@@ -143,7 +143,7 @@ public class GetWeatherData {
         return weather24HoursList;
     }
 
-    public List<WeatherIn15Days> getWeatherIn15Days(String city){
+    public List<WeatherIn15Days> getWeatherIn15Days(String city) {
         List<WeatherIn15Days> weatherIn15DaysList = new ArrayList<>();
         //请求地址设置
         String url = "http://api.apishop.net/common/weather/get15DaysWeatherByArea";
@@ -195,7 +195,7 @@ public class GetWeatherData {
         return weatherIn15DaysList;
     }
 
-    public List<AreaCode> getAreaCode(String city){
+    public List<AreaCode> getAreaCode(String city) {
         List<AreaCode> areaCodeList = new ArrayList<>();
         //请求地址设置
         String url = "http://api.apishop.net/common/weather/getAreaID";
@@ -238,8 +238,8 @@ public class GetWeatherData {
         return areaCodeList;
     }
 
-    public AutalTimeWeather getAutalTimeWeather(String code){
-        AutalTimeWeather autalTimeWeather = new AutalTimeWeather();
+    public InstanceWeather getInstanceTimeWeather(String areaCode, String postalCode) {
+        InstanceWeather instanceWeather = new InstanceWeather();
         //请求地址设置
         String url = "http://api.apishop.net/common/weather/getWeatherByPhonePostCode";
         //请求方法设置
@@ -249,16 +249,13 @@ public class GetWeatherData {
         //请求参数设置
         Map<String, String> params = new HashMap<String, String>();
         params.put("apiKey", "ElSPAFj03a93fd9040e1d65352247eb7c535f3f5ee5752c");
-        params.put("need3HourForcast","0");
-        params.put("needAlarm","1");
-        params.put("needHourData","0");
-        params.put("needIndex","1");
-        params.put("needMoreDay","0");
-        if(code.length()==6) {
-            params.put("phoneCode", code);
-        }else {
-            params.put("postCode", code);
-        }
+        params.put("need3HourForcast", "0");
+        params.put("needAlarm", "1");
+        params.put("needHourData", "0");
+        params.put("needIndex", "1");
+        params.put("needMoreDay", "0");
+        params.put("phoneCode", areaCode);
+        params.put("postCode", postalCode);
         String result = proxyToDesURL(requestMethod, url, headers, params);
         if (result != null) {
             JSONObject jsonObject = JSONObject.parseObject(result);
@@ -267,11 +264,67 @@ public class GetWeatherData {
                 // 状态码为000000, 说明请求成功
                 JSONObject jsonResult = jsonObject.getJSONObject("result");
                 String alarmList = jsonResult.getString("alarmList");
-                JSONObject indexResult = jsonResult.getJSONObject("f1").getJSONObject("index");
-                System.out.println(alarmList);
+                JSONObject f1Result = jsonResult.getJSONObject("f1");
+                JSONObject indexResult =f1Result.getJSONObject("index");
+                instanceWeather.setAirPress(f1Result.getString("air_press"));
+                String reg = "(\\d{4})(\\d{2})(\\d{2})";
+                String dateStr = f1Result.getString("day");
+                dateStr = dateStr.replaceAll(reg, "$1-$2-$3");
+                instanceWeather.setDay(dateStr);
+                instanceWeather.setDayTemperature(f1Result.getString("day_air_temperature"));
+                instanceWeather.setDayWeather(f1Result.getString("day_weather"));
+                instanceWeather.setDayWeatherPic(f1Result.getString("day_weather_pic"));
+                instanceWeather.setNightTemperature(f1Result.getString("night_air_temperature"));
+                instanceWeather.setNightWeather(f1Result.getString("night_weather"));
+                instanceWeather.setNightWeatherPic(f1Result.getString("night_weather_pic"));
+                instanceWeather.setRainRate(f1Result.getString("jiangshui"));
+                instanceWeather.setSunBeginAndEnd(f1Result.getString("sun_begin_end"));
+                instanceWeather.setWeekday(f1Result.getString("weekday"));
+                //indexResult不是数组，只能一个一个对象取出来！！！！！！！！！！！！！
+                String[] indexArray = {"ac","ag","aqi","beauty","cl","clothes","cold","uv","travel","ls"};
+                WeatherTip weatherTip = new WeatherTip();
+                for(int i =0;i<indexArray.length;i++){
+                    JSONObject totalResult = indexResult.getJSONObject(indexArray[i]);
+                    String titleResult = totalResult.getString("title");
+                    String descResult = totalResult.getString("desc");
+                    switch (indexArray[i]){
+                        case "ac":
+                            weatherTip.setAc("空调指数："+titleResult+"，"+descResult);
+                            break;
+                        case "ag":
+                            weatherTip.setAg("过敏指数："+titleResult+"，"+descResult);
+                            break;
+                        case "aqi":
+                            weatherTip.setAqi("空气指数："+titleResult+"，"+descResult);
+                            break;
+                        case "beauty":
+                            weatherTip.setBeauty("化妆指数："+titleResult+"，"+descResult);
+                            break;
+                        case "cl":
+                            weatherTip.setCl("晨练指数："+titleResult+"，"+descResult);
+                            break;
+                        case "clothes":
+                            weatherTip.setClothes("穿衣指数："+titleResult+"，"+descResult);
+                            break;
+                        case "cold":
+                            weatherTip.setCold("感冒指数："+titleResult+"，"+descResult);
+                            break;
+                        case "uv":
+                            weatherTip.setUv("紫外线："+titleResult+"，"+descResult);
+                            break;
+                        case "travel":
+                            weatherTip.setTravel("旅游指数："+titleResult+"，"+descResult);
+                            break;
+                        case "ls":
+                            weatherTip.setLs("晾晒指数："+titleResult+"，"+descResult);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                instanceWeather.setWeatherTip(weatherTip);
                 List<Map<String, Object>> aList = JSON.parseObject(alarmList, List.class);
                 List<WeatherAlarm> weatherAlarmList = new ArrayList<>();
-                List<WeatherTip> weatherTipList = new ArrayList<>();
                 for (Map<String, Object> objectMap : aList) {
                     WeatherAlarm weatherAlarm = new WeatherAlarm();
                     weatherAlarm.setIssueTime(objectMap.get("issueTime").toString());
@@ -280,6 +333,14 @@ public class GetWeatherData {
                     weatherAlarm.setSignalType(objectMap.get("signalType").toString());
                     weatherAlarmList.add(weatherAlarm);
                 }
+                instanceWeather.setWeatherAlarmList(weatherAlarmList);
+//                List<Map<String, Object>> indexList = JSON.parseObject(indexResult, List.class);
+//                for (Map<String, Object> objectMap : indexList) {
+//                    WeatherTip weatherTip = new WeatherTip();
+//                    weatherTip.setAc(objectMap.get("ac").toString());
+//                    weatherTipList.add(weatherTip);
+//                }
+
 //                for (Map<String, JSONObject> objectMap : list) {
 //                    AreaCode areaCode = new AreaCode();
 //                    JSONObject object = objectMap.get("cityInfo");
@@ -291,12 +352,12 @@ public class GetWeatherData {
 
             } else {
                 // 状态码非000000, 说明请求失败
-                return autalTimeWeather;
+                return instanceWeather;
             }
         } else {
             // 返回内容异常，发送请求失败，以下可根据业务逻辑自行修改
-            return autalTimeWeather;
+            return instanceWeather;
         }
-        return autalTimeWeather;
+        return instanceWeather;
     }
 }

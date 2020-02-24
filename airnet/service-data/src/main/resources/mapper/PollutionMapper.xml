@@ -18,12 +18,11 @@
     </insert>
 
     <insert id="insertPollutantHistory" parameterType="model.pollutant.PollutionEpisode">
-        insert into pollutanthistory (so2,pm25,publishTime,primaryPollutant,
+        insert into pollutanthistory (`rank`,so2,pm25,publishTime,primaryPollutant,
         co,area,no2,aqi,quality,pm10,o3per8h) values
         <foreach collection="list" item="item" separator=",">
-            ( #{item.so2},#{item.pm25},#{item.ct},#{item.primaryPollutant},
-            #{item.co},#{item.area},#{item.no2},#{item.aqi},
-            #{item.quality},#{item.pm10},#{item.o3Per8h} )
+            (#{item.rank},#{item.so2},#{item.pm25},#{item.ct},#{item.primaryPollutant},#{item.co},#{item.area},#{item.no2},#{item.aqi},
+            #{item.quality},#{item.pm10},#{item.o3Per8h})
         </foreach>
     </insert>
 

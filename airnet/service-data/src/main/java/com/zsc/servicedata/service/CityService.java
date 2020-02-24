@@ -20,5 +20,5 @@ public interface CityService {
      * @param area
      * @return
      */
-    String selectCodeByAreaName(String city,String area);
+    AreaCode selectCodeByAreaName(String city,String area);
 }

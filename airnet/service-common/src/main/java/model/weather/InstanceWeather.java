@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @ApiModel(value = "实时天气基本信息")
-public class AutalTimeWeather implements Serializable {
+public class InstanceWeather implements Serializable {
 
     private static final long serialVersionUID = 6134821832177151799L;
 
@@ -25,14 +25,17 @@ public class AutalTimeWeather implements Serializable {
     @ApiModelProperty(value = "当前日期")
     private String day;
 
-    @ApiModelProperty(value = "当前温度")
-    private String temperature;
+    @ApiModelProperty(value = "日间温度")
+    private String dayTemperature;
 
     @ApiModelProperty(value = "白天天气")
     private String dayWeather;
 
     @ApiModelProperty(value = "白天天气图")
     private String dayWeatherPic;
+
+    @ApiModelProperty(value = "晚间温度")
+    private String NightTemperature;
 
     @ApiModelProperty(value = "晚上天气")
     private String nightWeather;
@@ -47,9 +50,9 @@ public class AutalTimeWeather implements Serializable {
     private String sunBeginAndEnd;
 
     @ApiModelProperty(value = "预警信息")
-    private List<AutalTimeWeather> autalTimeWeatherList;
+    private List<WeatherAlarm> weatherAlarmList;
 
     @ApiModelProperty(value = "生活提示")
-    private List<WeatherTip> weatherTipList;
+    private WeatherTip weatherTip;
 
 }

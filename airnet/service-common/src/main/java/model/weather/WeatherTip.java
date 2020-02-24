@@ -12,7 +12,7 @@ public class WeatherTip implements Serializable {
 
     private static final long serialVersionUID = -9032575514472447124L;
 
-    @ApiModelProperty(value ="空调控制" )
+    @ApiModelProperty(value ="空调指数" )
     private String ac;
 
     @ApiModelProperty(value ="过敏指数" )
@@ -36,7 +36,7 @@ public class WeatherTip implements Serializable {
     @ApiModelProperty(value ="紫外线" )
     private String uv;
 
-    @ApiModelProperty(value ="旅游" )
+    @ApiModelProperty(value ="旅游指数" )
     private String travel;
 
     @ApiModelProperty(value ="晾晒指数" )

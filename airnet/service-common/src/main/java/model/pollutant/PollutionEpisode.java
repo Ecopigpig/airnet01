@@ -47,4 +47,7 @@ public class PollutionEpisode {
     @ApiModelProperty(value = "臭氧8小时滑动平均，μg/m3")
     private String o3Per8h;
 
+    @ApiModelProperty(value = "排名")
+    private Integer rank;
+
 }

@@ -3,6 +3,7 @@ package com.zsc.servicehi.controller;
 import com.alibaba.fastjson.JSON;
 import model.result.ResponseResult;
 import model.weather.AreaCode;
+import model.weather.InstanceWeather;
 import model.weather.Weather24Hours;
 import model.weather.WeatherIn15Days;
 import com.zsc.servicehi.utils.GetWeatherData;
@@ -70,6 +71,18 @@ public class WeatherController {
         GetWeatherData getWeatherData = new GetWeatherData();
         List<AreaCode> areaCodeList = getWeatherData.getAreaCode(city);
         return areaCodeList;
+    }
+
+    @ApiOperation(value = "根据城市的区号和邮政编号获该城市的实时天气,专供服务调用")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "areaCode", value = "城市区号，如:0763", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "postalCode", value = "城市邮政编码6位数字", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/getInstanceWeather",method = {RequestMethod.GET,RequestMethod.POST})
+    public InstanceWeather getInstanceWeather(@RequestParam String areaCode,@RequestParam String postalCode) {
+        GetWeatherData getWeatherData = new GetWeatherData();
+        InstanceWeather instanceWeather = getWeatherData.getInstanceTimeWeather(areaCode,postalCode);
+        return instanceWeather;
     }
 
     @ApiOperation(value = "根据城市中文名获取该城市的未来24小时天气情况")

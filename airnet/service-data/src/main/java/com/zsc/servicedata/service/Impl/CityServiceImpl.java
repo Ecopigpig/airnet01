@@ -23,18 +23,18 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public String selectCodeByAreaName(String city,String area) {
+    public AreaCode selectCodeByAreaName(String city,String area) {
+        //先直接通过市名和城市内区域名称搜索,所有搜索不到就把区域名称设定为市名再次搜索
         AreaCode areaCode = cityMapper.selectCodeByAreaName(city,area);
         if(areaCode==null){
-            return null;
-        }
-        else{
-            if(areaCode.getPostalCode()==null){
-                return areaCode.getAreaCode();
-            }else{
-                return areaCode.getPostalCode();
+            areaCode = cityMapper.selectCodeByAreaName(city,city);
+            if(areaCode==null) {
+                return null;
             }
+        }else {
+            return areaCode;
         }
+        return areaCode;
     }
 
 }
