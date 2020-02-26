@@ -35,14 +35,15 @@ public class PollutantController {
 
     /**
      * 提供给service-data获取城市监测点名称列表
+     *
      * @param city
      * @return
      */
     @ApiOperation(value = "通过城市名称获取该城市下的检测点名称,专供服务调用")
-    @RequestMapping(value = "/offerPollutantSites",method = RequestMethod.GET)
-    public Map<String,List<String>> offerPollutantSites(@RequestParam String city){
+    @RequestMapping(value = "/offerPollutantSites", method = RequestMethod.GET)
+    public Map<String, List<String>> offerPollutantSites(@RequestParam String city) {
         GetPollutantData getPollutantData = new GetPollutantData();
-        Map<String,List<String>> map = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         List<String> list = new ArrayList<>();
         PollutantCity pollutantCity = new PollutantCity();
         String key = city + "PollutionSituation";
@@ -58,14 +59,14 @@ public class PollutantController {
         }
         List<String> cityList = new ArrayList<>();
         cityList.add(city);
-        map.put("city",cityList);
+        map.put("city", cityList);
         stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
-        List<PollutionSite> pollutionSiteList =pollutantCity.getPollutionSiteList();
-        if(pollutionSiteList!=null){
-            pollutionSiteList.forEach(site->{
+        List<PollutionSite> pollutionSiteList = pollutantCity.getPollutionSiteList();
+        if (pollutionSiteList != null) {
+            pollutionSiteList.forEach(site -> {
                 list.add(site.getSiteName());
             });
-            map.put("siteName",list);
+            map.put("siteName", list);
         }
         return map;
     }
@@ -73,8 +74,8 @@ public class PollutantController {
 
     //直接获取实时的数据吧，不要经过缓存了
     @ApiOperation(value = "全国污染排行榜,专供服务调用")
-    @RequestMapping(value = "/offerNationPollutant",method = RequestMethod.GET)
-    public List<PollutantCity> offerNationPollutant(){
+    @RequestMapping(value = "/offerNationPollutant", method = RequestMethod.GET)
+    public List<PollutantCity> offerNationPollutant() {
         GetPollutantData getPollutantData = new GetPollutantData();
         List<PollutantCity> pollutantCityList = getPollutantData.getNationPollutantRank();
         return pollutantCityList;
@@ -85,8 +86,8 @@ public class PollutantController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "city", value = "城市名称", required = true, dataType = "String")
     })
-    @RequestMapping(value = "/getCity",method = RequestMethod.GET)
-    public ResponseResult getCity(@RequestParam String city){
+    @RequestMapping(value = "/getCity", method = RequestMethod.GET)
+    public ResponseResult getCity(@RequestParam String city) {
         GetPollutantData getPollutantData = new GetPollutantData();
         PollutantCity pollutantCity = new PollutantCity();
         String key = city + "PollutionSituation";
@@ -103,7 +104,7 @@ public class PollutantController {
         stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        if(pollutantCity!=null){
+        if (pollutantCity != null) {
             result.setMsg(true);
             result.setTotal(Long.valueOf(pollutantCity.getPollutionSiteList().size()));
         }
@@ -117,9 +118,9 @@ public class PollutantController {
             @ApiImplicitParam(paramType = "query", name = "page", value = "页码,默认1", dataType = "int"),
             @ApiImplicitParam(paramType = "query", name = "size", value = "页面大小,默认20", dataType = "int")
     })
-    @RequestMapping(value = "/getNation",method = RequestMethod.GET)
+    @RequestMapping(value = "/getNation", method = RequestMethod.GET)
     public ResponseResult getNation(@RequestParam(value = "page", defaultValue = "1") int pageIndex,
-                                    @RequestParam(value="size", defaultValue = "20") int pageSize){
+                                    @RequestParam(value = "size", defaultValue = "20") int pageSize) {
         GetPollutantData getPollutantData = new GetPollutantData();
         List<PollutantCity> pollutantCityList = new ArrayList<>();
         List<PollutantCity> redisList = new ArrayList<>();
@@ -143,11 +144,18 @@ public class PollutantController {
             //有缓存就取出来
             pollutantCityList.addAll(redisList);
         }
-        stringRedisTemplate.expire(key,30,TimeUnit.MINUTES);
-        List<PollutantCity> pageList = pollutantCityList.subList((pageIndex-1)*pageSize,pageSize);
+        stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
+
+        List<PollutantCity> pageList = new ArrayList<>();
+        int size = pollutantCityList.size();
+        int pageStart = pageIndex == 1 ? 0 : (pageIndex - 1) * pageSize;
+        int pageEnd = size < pageIndex * pageSize ? size : pageIndex * pageSize;
+        if (size>pageStart){
+            pageList = pollutantCityList.subList(pageStart,pageEnd);
+        }
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        if(pollutantCityList!=null){
+        if (pollutantCityList != null) {
             result.setMsg(true);
             result.setTotal(Long.valueOf(pollutantCityList.size()));
         }

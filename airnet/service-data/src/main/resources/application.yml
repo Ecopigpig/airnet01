@@ -29,7 +29,7 @@ spring:
        timeToLive: 1000000 #毫秒
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/airnet?setUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/airnet?setUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: "@mnc2017317725"
   mail:
