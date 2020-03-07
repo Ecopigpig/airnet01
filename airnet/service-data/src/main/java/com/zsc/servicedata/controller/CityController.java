@@ -1,21 +1,25 @@
 package com.zsc.servicedata.controller;
 
+import com.zsc.servicedata.entity.param.AqiHistoryParam;
+import com.zsc.servicedata.service.AirService;
+import model.air.HistoryAqiChart;
 import com.zsc.servicedata.service.CityService;
+import com.zsc.servicedata.service.PollutionService;
 import com.zsc.servicedata.tag.PassToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import model.pollutant.PollutionEpisode;
 import model.result.ResponseResult;
 import model.weather.AreaCode;
 import model.weather.InstanceWeather;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "CityController",tags = "城市相关控制器")
@@ -28,6 +32,12 @@ public class CityController {
 
     @Resource
     private CityService cityService;
+
+    @Resource
+    private AirService airService;
+
+    @Autowired
+    private PollutionService pollutionService;
 
     @PassToken
     @ApiOperation(value = "通过城市名称获取其对应的实时天气areaCode")
@@ -84,6 +94,30 @@ public class CityController {
             instanceWeather.setCity(city+area);
             result.setMsg(true);
             result.setData(instanceWeather);
+        }
+        return result;
+    }
+
+    @ApiOperation(value = "按条件获取空气质量历史排行榜")
+    @RequestMapping(value = "/airQualityHistoryChart", method = RequestMethod.GET)
+    public ResponseResult airQualityHistoryChart(@RequestBody AqiHistoryParam param) {
+        ResponseResult result = new ResponseResult();
+        result.setMsg(false);
+        //参数校验
+        if(param.getSize()==null||param.getSize()<=0) param.setSize(10L);
+        if(param.getOrder()==null||param.getOrder().equals("")){
+            param.setOrder("asc");
+        }else{
+            String order = param.getOrder().toUpperCase();
+            if(order.equals("ASC")) param.setOrder("ASC");
+            else if(order.equals("DESC")) param.setOrder("DESC");
+            else param.setOrder("ASC");
+        }
+        List<HistoryAqiChart> historyAqiChartList = airService.getAqiHistoryByCondition(param);
+        if(historyAqiChartList.size()>0){
+            result.setMsg(true);
+            result.setData(historyAqiChartList);
+            result.setTotal(Long.valueOf(historyAqiChartList.size()));
         }
         return result;
     }

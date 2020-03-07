@@ -2,9 +2,9 @@ package com.zsc.servicedata.mapper;
 
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import model.air.HistoryAqiChart;
 import model.pollutant.PollutionEpisode;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,4 +31,6 @@ public interface PollutionMapper {
     void insertPollutantHistory(@Param("list")List<PollutionEpisode> episodeList);
 
     List<PollutionEpisode> selectAllHistory();
+
+    void insertAqiHistory(List<HistoryAqiChart> historyAqiChartList);
 }

@@ -162,5 +162,4 @@ public class PollutantController {
         result.setData(pageList);
         return result;
     }
-
 }

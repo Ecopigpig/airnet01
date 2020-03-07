@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="spring-boot-starter-websocket-2.0.3.RELEASE">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/service-data/src/main/resources/lib/spring-boot-starter-websocket-2.0.3.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="jar://$PROJECT_DIR$/service-data/src/main/resources/lib/spring-boot-starter-websocket-2.0.3.RELEASE.jar!/" recursive="false" />
+  </library>
+</component>

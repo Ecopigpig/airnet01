@@ -334,22 +334,6 @@ public class GetWeatherData {
                     weatherAlarmList.add(weatherAlarm);
                 }
                 instanceWeather.setWeatherAlarmList(weatherAlarmList);
-//                List<Map<String, Object>> indexList = JSON.parseObject(indexResult, List.class);
-//                for (Map<String, Object> objectMap : indexList) {
-//                    WeatherTip weatherTip = new WeatherTip();
-//                    weatherTip.setAc(objectMap.get("ac").toString());
-//                    weatherTipList.add(weatherTip);
-//                }
-
-//                for (Map<String, JSONObject> objectMap : list) {
-//                    AreaCode areaCode = new AreaCode();
-//                    JSONObject object = objectMap.get("cityInfo");
-//                    areaCode.setCity(object.getString("c5"));
-//                    areaCode.setArea(object.getString("c3"));
-//                    areaCode.setAreaCode(object.getString("c11"));
-//                    areaCode.setPostalCode(object.getString("c12"));
-//                }
-
             } else {
                 // 状态码非000000, 说明请求失败
                 return instanceWeather;

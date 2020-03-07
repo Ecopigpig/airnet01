@@ -42,9 +42,27 @@
         <result column="quality" property="quality" javaType="String"/>
         <result column="pm10" property="pm10" javaType="String"/>
         <result column="o3per8h" property="o3Per8h" javaType="String"/>
+        <result column="rank" property="rank" javaType="Integer"/>
     </resultMap>
 
     <select id="selectAllHistory" resultMap="pollutionEpisodeMap">
         select * from pollutanthistory
     </select>
+
+    <parameterMap id="historyAqiMap" type="model.air.HistoryAqiChart">
+        <parameter property="id" javaType="Long"/>
+        <parameter property="city" javaType="String"/>
+        <parameter property="aqi" javaType="String"/>
+        <parameter property="quality" javaType="String"/>
+        <parameter property="rank" javaType="Integer"/>
+        <parameter property="markTime" javaType="Date"/>
+    </parameterMap>
+
+    <insert id="insertAqiHistory" parameterMap="historyAqiMap">
+        insert into aqihistory (`rank`,markTime,area,aqi,quality) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.rank},#{item.markTime},
+            #{item.city},#{item.aqi},#{item.quality})
+        </foreach>
+    </insert>
 </mapper>

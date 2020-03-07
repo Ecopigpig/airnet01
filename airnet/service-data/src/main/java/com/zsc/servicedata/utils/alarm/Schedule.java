@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zsc.servicedata.entity.alarm.MonitorMark;
 import com.zsc.servicedata.entity.data.Pollutant;
+import model.air.HistoryAqiChart;
 import com.zsc.servicedata.service.PollutionService;
 import com.zsc.servicedata.service.UserService;
 import model.pollutant.PollutionEpisode;
@@ -16,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -298,11 +301,16 @@ public class Schedule {
         return markMap;
     }
 
+    /**
+     * 定时记录367个城市的污染情况 和 空气质量情况
+     * @throws IOException
+     */
     @Scheduled(fixedRate = 2000000)
 //    @Scheduled(cron = "0 0 20 * * ?")// 每天下午8点
-    public void markPollutantHistory() throws IOException {
+    public void markPollutantHistory() throws IOException, ParseException {
         String result = restTemplate.getForObject("http://localhost:8763/pollutant/offerNationPollutant", String.class);
         List<PollutionEpisode> cityList = new ArrayList<>();
+        List<HistoryAqiChart> historyAqiChartList = new ArrayList<>();
         JSONArray jsonArray = JSONObject.parseArray(result);
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject job = jsonArray.getJSONObject(i);
@@ -311,23 +319,19 @@ public class Schedule {
             String rank = job.getString("num");
             PollutionEpisode city = objectMapper.readValue(str, PollutionEpisode.class);
             city.setRank(Integer.valueOf(rank));
+            HistoryAqiChart historyAqiChart = new HistoryAqiChart();
+            historyAqiChart.setCity(city.getArea());
+            historyAqiChart.setAqi(city.getAqi());
+            historyAqiChart.setQuality(city.getQuality());
+            historyAqiChart.setRank(city.getRank());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String dateStr = sdf.format(new Date());
+            Date date = sdf.parse(dateStr);
+            historyAqiChart.setMarkTime(date);
             cityList.add(city);
+            historyAqiChartList.add(historyAqiChart);
         }
-        pollutionService.markHistory(cityList);
+        pollutionService.markPollutantHistory(cityList);
+        pollutionService.markAqiHistory(historyAqiChartList);
     }
-
-//    @Scheduled(cron = "0 0 20 * * ?")// 每天下午8点
-//    public void markAirHistory() throws IOException {
-//        String result = restTemplate.getForObject("http://localhost:8763/pollutant/offerNationPollutant", String.class);
-//        List<PollutionEpisode> cityList = new ArrayList<>();
-//        JSONArray jsonArray = JSONObject.parseArray(result);
-//        for (int i = 0; i < jsonArray.size(); i++) {
-//            JSONObject job = jsonArray.getJSONObject(i);
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String str = job.getString("pollutionEpisode");
-//            PollutionEpisode city = objectMapper.readValue(str, PollutionEpisode.class);
-//            cityList.add(city);
-//        }
-//        pollutionService.markHistory(cityList);
-//    }
 }

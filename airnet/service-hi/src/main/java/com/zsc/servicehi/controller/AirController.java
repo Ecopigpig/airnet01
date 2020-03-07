@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.xml.ws.Response;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "AirController", tags = "空气质量控制器")

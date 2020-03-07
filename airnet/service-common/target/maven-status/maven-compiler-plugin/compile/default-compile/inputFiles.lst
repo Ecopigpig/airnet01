@@ -1,7 +1,12 @@
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\tag\PassToken.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\config\InterceptorConfig.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\service\TokenService.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\interceptor\AuthenticationInterceptor.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\tag\UserLoginToken.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\service\Impl\TokenServiceImpl.java
-F:\#########AAAAAAAAAAAAæ¯•è®¾\how2j-springcloud\å­¦ä¹ æ–¹å¿—æœ‹-SpringCloudæ­å»º\airnet\service-common\src\main\java\utils\TokenUtil.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\result\ResponseResult.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\pollutant\PollutionEpisode.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\WeatherTip.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\Weather24Hours.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\WeatherAlarm.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\WeatherIn15Days.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\air\AirQuality.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\air\HistoryAqiChart.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\pollutant\PollutantCity.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\pollutant\PollutionSite.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\AreaCode.java
+F:\#########AAAAAAAAAAAA±ÏÉè\how2j-springcloud\Ñ§Ï°·½Ö¾Åó-SpringCloud´î½¨\airnet\service-common\src\main\java\model\weather\InstanceWeather.java

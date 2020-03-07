@@ -2,9 +2,8 @@ package com.zsc.servicedata.service;
 
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import model.air.HistoryAqiChart;
 import model.pollutant.PollutionEpisode;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +43,17 @@ public interface PollutionService {
      * 把全国城市的污染情况记录在数据库中,称为历史记录
      * @param cityList
      */
-    void markHistory(List<PollutionEpisode> cityList);
+    void markPollutantHistory(List<PollutionEpisode> cityList);
 
+    /**
+     * 获取数据库中记录的367个城市的历史污染情况
+     * @return
+     */
     List<PollutionEpisode> getPollutantHistory();
+
+    /**
+     * 把全国城市的空气质量记录在数据库中,称为历史记录
+     * @param historyAqiChartList
+     */
+    void markAqiHistory(List<HistoryAqiChart> historyAqiChartList);
 }

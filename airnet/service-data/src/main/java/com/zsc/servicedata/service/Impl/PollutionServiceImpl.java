@@ -2,11 +2,11 @@ package com.zsc.servicedata.service.Impl;
 
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
+import model.air.HistoryAqiChart;
 import com.zsc.servicedata.mapper.CityMapper;
 import com.zsc.servicedata.mapper.PollutionMapper;
 import com.zsc.servicedata.service.PollutionService;
 import model.pollutant.PollutionEpisode;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -67,12 +67,17 @@ public class PollutionServiceImpl implements PollutionService {
     }
 
     @Override
-    public void markHistory(List<PollutionEpisode> cityList) {
+    public void markPollutantHistory(List<PollutionEpisode> cityList) {
         pollutionMapper.insertPollutantHistory(cityList);
     }
 
     @Override
     public List<PollutionEpisode> getPollutantHistory() {
         return pollutionMapper.selectAllHistory();
+    }
+
+    @Override
+    public void markAqiHistory(List<HistoryAqiChart> historyAqiChartList) {
+        pollutionMapper.insertAqiHistory(historyAqiChartList);
     }
 }
