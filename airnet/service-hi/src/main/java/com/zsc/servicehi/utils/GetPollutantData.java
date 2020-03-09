@@ -1,7 +1,9 @@
 package com.zsc.servicehi.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import model.pollutant.MonitorSite;
 import model.pollutant.PollutantCity;
 import model.pollutant.PollutionSite;
 import model.pollutant.PollutionEpisode;
@@ -275,6 +277,43 @@ public class GetPollutantData {
         }
         return pollutantCityList;
 
+    }
+
+    public List<MonitorSite> getSitesWithLocation(){
+        List<MonitorSite> monitorSiteList = new ArrayList<>();
+        //请求地址设置
+        String url = "http://api.apishop.net/common/air/getStationList";
+        //请求方法设置
+        String requestMethod = "POST";
+        //请求头部设置
+        Map<String, String> headers = new HashMap<String, String>();
+        //请求参数设置
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("apiKey", "ElSPAFj03a93fd9040e1d65352247eb7c535f3f5ee5752c");
+        String result = proxyToDesURL(requestMethod, url, headers, params);
+        if (result != null) {
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            String status_code = jsonObject.getString("statusCode");
+            if (status_code.equals("000000")) {
+                // 状态码为000000, 说明请求成功
+                JSONArray jsonArray = jsonObject.getJSONArray("result");
+                for(int i=0;i<jsonArray.size();i++){
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    MonitorSite monitorSite = new MonitorSite();
+                    monitorSite.setArea(object.getString("city"));
+                    monitorSite.setSiteName(object.getString("station"));
+                    monitorSite.setLongitude(object.getString("lng"));
+                    monitorSite.setLatitude(object.getString("lat"));
+                    monitorSiteList.add(monitorSite);
+                }
+            } else {
+                // 状态码非000000, 说明请求失败
+                return monitorSiteList;
+            }
+        } else {
+            return monitorSiteList;
+        }
+        return monitorSiteList;
     }
 
 //    @Override

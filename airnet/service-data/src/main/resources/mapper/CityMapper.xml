@@ -19,15 +19,26 @@
         </foreach>
     </insert>
 
-    <insert id="saveSiteOfCity" parameterType="java.util.Map">
-        insert into citysite (area,siteName) values
+    <insert id="saveSiteOfCity">
+        insert into citysite (area,siteName,longitude,latitude) values
         <foreach collection="list" item="item" index="index" separator="," close=";">
-            (#{city},#{item})
+            (#{item.area},#{item.siteName},#{item.longitude},#{item.latitude})
         </foreach>
     </insert>
 
     <select id="selectCodeByAreaName" resultMap="CityCodeMap">
 --         select * from areacode where city like '%${city}%' and area like '%${area}%'
         select * from areacode where city like "%"#{city}"%" and area like "%"#{area}"%"
+    </select>
+
+    <resultMap id="MonitorSiteMap" type="model.pollutant.MonitorSite">
+        <result property="area" column="area"/>
+        <result property="siteName" column="sitename"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+    </resultMap>
+
+    <select id="selectMonitorSiteByCity" resultMap="MonitorSiteMap">
+        SELECT * FROM citysite WHERE area like "%"#{city}"%"
     </select>
 </mapper>

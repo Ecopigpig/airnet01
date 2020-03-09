@@ -2,6 +2,7 @@ package com.zsc.servicehi.controller;
 
 import com.alibaba.fastjson.JSON;
 import model.air.AirQuality;
+import model.pollutant.MonitorSite;
 import model.pollutant.PollutantCity;
 import model.pollutant.PollutionSite;
 import model.result.ResponseResult;
@@ -34,7 +35,7 @@ public class PollutantController {
     StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 提供给service-data获取城市监测点名称列表
+     * 提供给service-data获取城市监测点名称列表,此接口仅提供名称
      *
      * @param city
      * @return
@@ -46,7 +47,7 @@ public class PollutantController {
         Map<String, List<String>> map = new HashMap<>();
         List<String> list = new ArrayList<>();
         PollutantCity pollutantCity = new PollutantCity();
-        String key = city + "PollutionSituation";
+        String key = city + "PollutantSites";
         JSON json = (JSON) JSON.toJSON(redisTemplate.opsForValue().get(key));
         Object javaObject = JSON.toJavaObject(json, PollutantCity.class);
         if (javaObject == null) {
@@ -71,6 +72,14 @@ public class PollutantController {
         return map;
     }
 
+
+    @ApiOperation(value = "获取全国城市下的检测点名称包括其经纬度,专供服务调用")
+    @RequestMapping(value = "/offerSitesWithLocation", method = RequestMethod.GET)
+    public List<MonitorSite> offerSitesWithLocation() {
+        GetPollutantData getPollutantData = new GetPollutantData();
+        List<MonitorSite> list = getPollutantData.getSitesWithLocation();
+        return list;
+    }
 
     //直接获取实时的数据吧，不要经过缓存了
     @ApiOperation(value = "全国污染排行榜,专供服务调用")

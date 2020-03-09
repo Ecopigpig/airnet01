@@ -6,6 +6,7 @@ import model.air.HistoryAqiChart;
 import com.zsc.servicedata.mapper.CityMapper;
 import com.zsc.servicedata.mapper.PollutionMapper;
 import com.zsc.servicedata.service.PollutionService;
+import model.pollutant.MonitorSite;
 import model.pollutant.PollutionEpisode;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -52,13 +53,10 @@ public class PollutionServiceImpl implements PollutionService {
     }
 
     @Override
-    public Map<String, List<String>> getMonitorPointInCity(String city) {
+    public List<MonitorSite> getMonitorPointInCity(String city) {
         //先获取城市的监测点
-//        Map<String, List<String>> map = new HashMap<>();
-        Map<String, List<String>> map = restTemplate.getForObject("http://localhost:8763/pollutant/offerPollutantSites?city="+city, HashMap.class);
-        //再存入数据库中
-        cityMapper.saveSiteOfCity(map.get("city").get(0),map.get("siteName"));
-        return map;
+        List<MonitorSite> monitorSiteList = cityMapper.selectMonitorSiteByCity(city);
+        return monitorSiteList;
     }
 
     @Override

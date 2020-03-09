@@ -3,6 +3,7 @@ package com.zsc.servicedata.service;
 import com.zsc.servicedata.entity.data.Pollutant;
 import com.zsc.servicedata.entity.param.PollutionMonitorParam;
 import model.air.HistoryAqiChart;
+import model.pollutant.MonitorSite;
 import model.pollutant.PollutionEpisode;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public interface PollutionService {
      * @param city
      * @return
      */
-    Map<String, List<String>> getMonitorPointInCity(String city);
+    List<MonitorSite> getMonitorPointInCity(String city);
 
     /**
      * 获取所有的监测记录
