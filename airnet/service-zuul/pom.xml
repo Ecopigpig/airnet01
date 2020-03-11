@@ -6,8 +6,8 @@
         <groupId>com.zsc</groupId>
         <artifactId>airnet</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <artifactId>service-zuul</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -35,10 +35,33 @@
 
     <build>
         <plugins>
-            <!--<plugin>-->
-                <!--<groupId>org.springframework.boot</groupId>-->
-                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <fork>true</fork>
+                    <skip>true</skip>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <useUniqueVersions>false</useUniqueVersions>
+                            <mainClass>com.zsc.servicezuul.ServiceZuulApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- 跳过单元测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -46,15 +69,9 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>alimaven spring plugin</id>
-            <name>alimaven spring plugin</name>
-            <url>https://maven.aliyun.com/repository/spring-plugin</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
