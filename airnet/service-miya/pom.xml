@@ -75,7 +75,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.zsc.eurekaserver.EurekaServerApplication</mainClass>
+                            <mainClass>com.zsc.servicemiya.ServiceMiyaApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

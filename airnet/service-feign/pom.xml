@@ -81,7 +81,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.zsc.eurekaserver.EurekaServerApplication</mainClass>
+                            <mainClass>com.zsc.servicefeign.ServiceFeignApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
